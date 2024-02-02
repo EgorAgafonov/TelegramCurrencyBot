@@ -25,6 +25,4 @@ def foto_message_answer(message: telebot.types.Message):
     bot.reply_to(message, "Nice meme XDD")
 
 
-
-
 bot.polling(none_stop=True)
