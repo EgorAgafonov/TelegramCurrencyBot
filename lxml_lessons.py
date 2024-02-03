@@ -3,21 +3,34 @@ import lxml.html
 from lxml import etree
 from bs4 import BeautifulSoup
 
+                                                    # 1 -
+ # - пример парсинга содержимого HTML-страницы (заранее сохраненной в корневой папке проекта) с помощью иблиотеки lxml:
 
-# 1 - пример парсинга содержимого HTML-страницы (заранее сохраненной в корневой папке проекта) с помощью
+# html = requests.get("https://www.python.org/").content
+# tree = lxml.html.document_fromstring(html)
+# title = tree.xpath("//*[@id='dive-into-python']/ul[2]/li[1]/div[2]/p/text()")
+# print(title)
+#
+# # создадим объект ElementTree. Он возвращается функцией parse()
+# tree = etree.parse('Welcome to Python.org.html', lxml.html.HTMLParser())  # попытаемся спарсить наш файл с помощью
+# # HTML-парсера. Сам HTML — это то, что мы скачали и поместили в папку из браузера.
+#
+# ul = tree.findall('/body/div/div[3]/div/section/div[2]/div[1]/div/ul/li')  # помещаем в аргумент методу findall
+# # скопированный xpath. Здесь мы получим все элементы списка новостей.
+#
+# for li in ul:
+#     a = li.find('a')    # в каждом элементе находим, где хранится заголовок новости. У нас это тег <a>. Т.е.
+#                         # гиперссылка, на которую нужно нажать, чтобы перейти на страницу с новостью. Гиперссылки в
+#                         # HTML — это всегда тэг <a>.
+#     print(a.text)  # из этого тега забираем текст — это и будет нашим названием
 
-# библиотеки lxml:
-html = requests.get("https://www.python.org/").content
-tree = lxml.html.document_fromstring(html)
-title = tree.xpath("//*[@id='dive-into-python']/ul[2]/li[1]/div[2]/p/text()")
-print(title)
 
-# создадим объект ElementTree. Он возвращается функцией parse()
-tree = etree.parse('Welcome to Python.org.html', lxml.html.HTMLParser())  # попытаемся спарсить наш файл с помощью HTML-парсера. Сам HTML — это то, что мы скачали и поместили в папку из браузера.
+                                                         # 2 -
+    # - пример парсинга содержимого HTML-страницы (заранее сохраненной в корневой папке проекта) с помощью библиотеки
+    # bs4 import BeautifulSoup:
 
-ul = tree.findall('/body/div/div[3]/div/section/div[2]/div[1]/div/ul/li')  # помещаем в аргумент методу findall скопированный xpath. Здесь мы получим все элементы списка новостей. (Все заголовки и их даты)
-
-# создаём цикл? в котором будем выводить название каждого элемента из списка
-for li in ul:
-    a = li.find('a')  # в каждом элементе находим, где хранится заголовок новости. У нас это тег <a>. Т.е. гиперссылка, на которую нужно нажать, чтобы перейти на страницу с новостью. Гиперссылки в HTML — это всегда тэг <a>.
-    print(a.text)  # из этого тега забираем текст — это и будет нашим названием
+base = 'https://ru.stackoverflow.com'
+html = requests.get(base).content
+soup = BeautifulSoup(html, 'lxml')
+div_container = soup.find('div',  id='question-mini-list')
+print(div_container)
