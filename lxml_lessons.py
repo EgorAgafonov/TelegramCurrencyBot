@@ -3,8 +3,8 @@ import lxml.html
 from lxml import etree
 from bs4 import BeautifulSoup
 
-                                                    # 1 -
- # - пример парсинга содержимого HTML-страницы (заранее сохраненной в корневой папке проекта) с помощью иблиотеки lxml:
+# 1 -
+# - пример парсинга содержимого HTML-страницы (заранее сохраненной в корневой папке проекта) с помощью иблиотеки lxml:
 
 # html = requests.get("https://www.python.org/").content
 # tree = lxml.html.document_fromstring(html)
@@ -25,15 +25,18 @@ from bs4 import BeautifulSoup
 #     print(a.text)  # из этого тега забираем текст — это и будет нашим названием
 
 
-                                                         # 2 -
-    # - пример парсинга содержимого HTML-страницы (заранее сохраненной в корневой папке проекта) с помощью библиотеки
-    # bs4 import BeautifulSoup:
+# 2 -
+# - пример парсинга содержимого HTML-страницы (заранее сохраненной в корневой папке проекта) с помощью библиотеки
+# bs4 import BeautifulSoup:
 
 base = 'https://ru.stackoverflow.com'
 html = requests.get(base).content
 soup = BeautifulSoup(html, 'lxml')
-div_container = soup.find('div',  id='question-mini-list')
+div_container = soup.find('div', id='question-mini-list')
 a_tag = div_container.findAll('a', class_='s-link')
-
-for link in a_tag:
-    print(link, "\n")
+file = 'parsed_links_win1251.txt'
+with open(file, 'w', encoding='windows-1251') as f:
+    for link in a_tag:
+        result = f"\n{link.getText()}\n" + f"\n{base + link.get('href')}\n"
+        f.write(result)
+        print(f"\n{link.getText()}\n" + f"{base + link.get('href')}\n")
