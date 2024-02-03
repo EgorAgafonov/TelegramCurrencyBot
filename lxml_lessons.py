@@ -1,7 +1,12 @@
 import requests
 import lxml.html
 from lxml import etree
+from bs4 import BeautifulSoup
 
+
+# 1 - пример парсинга содержимого HTML-страницы (заранее сохраненной в корневой папке проекта) с помощью
+
+# библиотеки lxml:
 html = requests.get("https://www.python.org/").content
 tree = lxml.html.document_fromstring(html)
 title = tree.xpath("//*[@id='dive-into-python']/ul[2]/li[1]/div[2]/p/text()")
