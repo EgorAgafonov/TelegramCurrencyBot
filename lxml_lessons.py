@@ -33,4 +33,7 @@ base = 'https://ru.stackoverflow.com'
 html = requests.get(base).content
 soup = BeautifulSoup(html, 'lxml')
 div_container = soup.find('div',  id='question-mini-list')
-print(div_container)
+a_tag = div_container.findAll('a', class_='s-link')
+
+for link in a_tag:
+    print(link, "\n")
