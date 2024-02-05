@@ -34,9 +34,9 @@ html = requests.get(base).content
 soup = BeautifulSoup(html, 'lxml')
 div_container = soup.find('div', id='question-mini-list')
 a_tag = div_container.findAll('a', class_='s-link')
-file = 'parsed_links_win1251.txt'
+file = 'Welcome to Python.org.html'
 with open(file, 'w', encoding='windows-1251') as f:
     for link in a_tag:
         result = f"\n{link.getText()}\n" + f"\n{base + link.get('href')}\n"
         f.write(result)
-        print(f"\n{link.getText()}\n" + f"{base + link.get('href')}\n")
+        print(f"{link.getText()}\n" + f"{base + link.get('href')}\n")
