@@ -32,7 +32,7 @@ def handle_values(message: telebot.types.Message):
 
 @bot.message_handler(content_types=["text"])
 def voice_message_answer(message: telebot.types.Message):
-    status, result = currency_API.conversion_of_currency_pair(api_key=api_key, base_code="USD" )
+    status, result = currency_API.conversion_of_currency_pair(api_key, "USD", "RUB", "99.99")
     bot.reply_to(message, "xxxxxxxxxxxxxxxxxxxxxxxx")
 #
 #
