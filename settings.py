@@ -35,21 +35,3 @@ keys = {
     'USD': 'доллар США',
     'UZS': 'узбекский сом'
 }
-
-base = 'RUB'
-quote = "UZS"
-
-# if base in keys.keys():
-#     quote_ticker = base
-# else:
-#     raise KeyError("Валюта не поддерживается")
-
-try:
-    keys[base]
-except KeyError:
-    raise Exception("Ошибка")
-
-try:
-    keys[quote]
-except KeyError:
-    raise Exception("Ошибка")
