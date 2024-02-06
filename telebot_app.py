@@ -31,9 +31,12 @@ def handle_values(message: telebot.types.Message):
 
 
 @bot.message_handler(content_types=["text"])
-def voice_message_answer(message: telebot.types.Message):
-    status, result = currency_API.conversion_of_currency_pair(api_key, "USD", "RUB", "99.99")
-    bot.reply_to(message, "xxxxxxxxxxxxxxxxxxxxxxxx")
+def currency_convertor(message: telebot.types.Message):
+    amount, base_code, target_code = message.text.split(' ')
+    status, result = currency_API.conversion_of_currency_pair(api_key, amount=amount, base_code=base_code,
+                                                              target_code=target_code)
+    text = f"Стоимость покупки {amount} {base_code} составит {round(result['conversion_result'],2)} {target_code}."
+    bot.send_message(message.chat.id, text)
 #
 #
 # @bot.message_handler(content_types=["photo"])

@@ -25,15 +25,12 @@ class ExchangeRateAPI:
 
         return status, result
 
-    def conversion_of_currency_pair(self, api_key: str, base_code: str, target_code: str, amount=None) -> object:
-        """Метод отправки GET-запроса для предоставления сведений об отношении обменного курса целевой валюты
-        (target_code) по отношению к одной единице базовой валюте(base_code). """
+    def conversion_of_currency_pair(self, api_key: str, amount: str, base_code: str, target_code: str, ) -> object:
+        """Метод отправки GET-запроса для предоставления сведений о стоимости(amount) одной/нескольких единиц базовой
+        валюты(base_code) по отношению к целевой валюте(target_code), т.е. стоимость покупки одной валюты в
+        единицах другой."""
 
-        if not amount:
-            response = requests.get(self.base_url + api_key + "pair/" + f"{base_code}/" + f"{target_code}")
-        else:
-            response = requests.get(self.base_url + api_key + "pair/" + f"{base_code}/" + f"{target_code}/"
-                                    + str(amount))
+        response = requests.get(self.base_url + api_key + "pair/" + f"{base_code}/" + f"{target_code}/" + str(amount))
 
         status = response.status_code
         result = ""
