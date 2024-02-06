@@ -40,7 +40,3 @@ from bs4 import BeautifulSoup
 #         result = f"\n{link.getText()}\n" + f"\n{base + link.get('href')}\n"
 #         f.write(result)
 #         print(f"{link.getText()}\n" + f"{base + link.get('href')}\n")
-
-
-text = input("Укажите команду для конвертации:").split(" ")
-print(text)

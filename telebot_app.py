@@ -6,6 +6,7 @@ import emoji
 bot = telebot.TeleBot(TOKEN)
 currency_API = ExchangeRateAPI()
 
+
 @bot.message_handler(commands=['start', 'help'])
 def handle_start_help(message: telebot.types.Message):
     text_info = (f"Приветствую тебя, друг!\n"
@@ -25,9 +26,10 @@ def handle_start_help(message: telebot.types.Message):
 @bot.message_handler(commands=["values"])
 def handle_values(message: telebot.types.Message):
     text = "Cписок доступных валют:"
-    for key in currencies.items():
-        text = f"\n{text, key}"
-    bot.reply_to(message, text)
+    for i in currencies.items():
+        text = ' - '.join(i)
+
+    bot.send_message(message.chat.id, text)
 
 
 @bot.message_handler(content_types=["text"])

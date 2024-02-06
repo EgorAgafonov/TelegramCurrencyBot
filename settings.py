@@ -20,7 +20,7 @@ unsorted_currncs = {
 }
 a = unsorted_currncs.items()
 b = sorted(a)
-print(dict(b))
+# print(dict(b))
 
 currencies = {
   'AED': 'ОАЭ дерхам',
@@ -35,3 +35,10 @@ currencies = {
   'USD': 'доллар',
   'UZS': 'узбекский сом'
 }
+
+
+text = "Cписок доступных валют:"
+for i in currencies.items():
+    text = ' - '.join(i)
+    print(text)
+
