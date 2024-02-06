@@ -1,10 +1,11 @@
 import telebot
+
+import exchange_app
 from settings import *
 from exchange_app import ExchangeRateAPI
 from bot_exceptions_class import *
 
 bot = telebot.TeleBot(TOKEN)
-currency_API = ExchangeRateAPI()
 
 
 @bot.message_handler(commands=['start', 'help'])
@@ -36,33 +37,9 @@ def currency_convertor(message: telebot.types.Message):
     values = message.text.split(' ')
     if len(values) != 3:
         raise ConvertionException(
-            f"{message.chat.username}, ты ввел(a) {values} значения(ий) вместо положенных трех😅   .\n "
+            f"{message.chat.username}, ты ввел(a) {values} значения(ий) вместо положенных трех 😅.\n "
             f"Вот корректный пример ввода: '100 USD RUB'")
-
     quantity, base_code, target_code = values
-
-    if base_code == target_code:
-        raise ConvertionException(f"{message.chat.username}, ты указал(a) две одинаковых валюты.\n"
-                                  f"Логика вышла из чата😜.\n "
-                                  f"Вот корректный пример ввода: '100 USD RUB'")
-
-    try:
-        keys[base_code]
-    except KeyError:
-        raise ConvertionException(f"Не удалось обработать валюту {base_code}.\n"
-                                  f"Список поддерживаемых валют доступен по команде '/values' .")
-    try:
-        keys[target_code]
-    except KeyError:
-        raise ConvertionException(f"Не удалось обработать валюту {target_code}.\n"
-                                  f"Список поддерживаемых валют доступен по команде '/values' .")
-
-    try:
-        float(quantity)
-    except ValueError:
-        raise ConvertionException(f"Не удалось обработать количество валюты.\n"
-                                  f"Указанное значение: {quantity} не является числом.")
-
     status, result = currency_API.conversion_of_currency_pair(api_key, amount=quantity, base_code=base_code,
                                                               target_code=target_code)
     text = f"Стоимость покупки {quantity} {base_code} составит {round(result['conversion_result'], 2)} {target_code}."
