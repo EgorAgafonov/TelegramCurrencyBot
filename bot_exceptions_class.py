@@ -2,8 +2,6 @@ import telebot
 from settings import *
 from exchange_app import ExchangeRateAPI
 
-currency_API = ExchangeRateAPI()
-
 
 class ConvertionException(Exception):
     pass
@@ -12,10 +10,14 @@ class ConvertionException(Exception):
 class CryptoConverter:
 
     @staticmethod
-    def convert(quantity: str, base_code: str, target_code: str, message: telebot.types.Message):
+    def convert(quantity: str, base_code: str, target_code: str):
 
+        currency_API = ExchangeRateAPI()
+
+        status, result = currency_API.conversion_of_currency_pair(api_key, amount=quantity, base_code=base_code,
+                                                                  target_code=target_code)
         if base_code == target_code:
-            raise ConvertionException(f"{message.chat.username}, ты указал(a) две одинаковых валюты.\n"
+            raise ConvertionException(f"Указаны две одинаковых валюты.\n"
                                       f"Логика вышла из чата😜.\n "
                                       f"Вот корректный пример ввода: '100 USD RUB'")
         try:
@@ -34,4 +36,9 @@ class CryptoConverter:
         except ValueError:
             raise ConvertionException(f"Не удалось обработать количество валюты.\n"
                                       f"Указанное значение: {quantity} не является числом.")
+
+        return result['conversion_result']
+
+
+
 

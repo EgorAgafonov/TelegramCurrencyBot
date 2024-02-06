@@ -3,9 +3,10 @@ import telebot
 import exchange_app
 from settings import *
 from exchange_app import ExchangeRateAPI
-from bot_exceptions_class import *
+from bot_exceptions_class import ConvertionException, CryptoConverter
 
 bot = telebot.TeleBot(TOKEN)
+
 
 
 @bot.message_handler(commands=['start', 'help'])
@@ -34,16 +35,23 @@ def handle_values(message: telebot.types.Message):
 
 @bot.message_handler(content_types=["text"])
 def currency_convertor(message: telebot.types.Message):
-    values = message.text.split(' ')
-    if len(values) != 3:
-        raise ConvertionException(
-            f"{message.chat.username}, ты ввел(a) {values} значения(ий) вместо положенных трех 😅.\n "
-            f"Вот корректный пример ввода: '100 USD RUB'")
-    quantity, base_code, target_code = values
-    status, result = currency_API.conversion_of_currency_pair(api_key, amount=quantity, base_code=base_code,
-                                                              target_code=target_code)
-    text = f"Стоимость покупки {quantity} {base_code} составит {round(result['conversion_result'], 2)} {target_code}."
-    bot.send_message(message.chat.id, text)
+    try:
+        values = message.text.split(' ')
+
+        if len(values) != 3:
+            raise ConvertionException(
+                f"{message.chat.username}, ты ввел(a) {values} значения(ий) вместо положенных трех 😅.\n "
+                f"Вот корректный пример ввода: '100 USD RUB'")
+
+        quantity, base_code, target_code = values
+        result = CryptoConverter.convert(quantity, base_code, target_code)
+    except ConvertionException as e:
+        bot.reply_to(message, f"Не удалось обработать команду\n{e}")
+    except Exception as e:
+        bot.reply_to(message, f"Не удалось обработать команду\n{e}")
+    else:
+        text = f"Стоимость покупки {quantity} {base_code} составит {round(result)} {target_code}."
+        bot.send_message(message.chat.id, text)
 
 
 #
