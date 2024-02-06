@@ -29,14 +29,14 @@ from bs4 import BeautifulSoup
 # - пример парсинга содержимого HTML-страницы (заранее сохраненной в корневой папке проекта) с помощью библиотеки
 # bs4 import BeautifulSoup:
 
-# base = 'https://ru.stackoverflow.com'
-# html = requests.get(base).content
-# soup = BeautifulSoup(html, 'lxml')
-# div_container = soup.find('div', id='question-mini-list')
-# a_tag = div_container.findAll('a', class_='s-link')
-# file = 'lxml_lessons.txt'
-# with open(file, 'w', encoding='windows-1251') as f:
-#     for link in a_tag:
-#         result = f"\n{link.getText()}\n" + f"\n{base + link.get('href')}\n"
-#         f.write(result)
-#         print(f"{link.getText()}\n" + f"{base + link.get('href')}\n")
+base = 'https://ru.stackoverflow.com'
+html = requests.get(base).content
+soup = BeautifulSoup(html, 'lxml')
+div_container = soup.find('div', id='question-mini-list')
+a_tag = div_container.findAll('a', class_='s-link')
+file = 'lxml_lessons.txt'
+with open(file, 'w', encoding='windows-1251') as f:
+    for link in a_tag:
+        result = f"\n{link.getText()}\n" + f"\n{base + link.get('href')}\n"
+        f.write(result)
+        print(f"{link.getText()}\n" + f"{base + link.get('href')}\n")

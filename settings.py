@@ -5,7 +5,7 @@ load_dotenv()
 TOKEN = os.getenv('TOKEN')
 api_key = os.getenv('API_KEY')
 
-unsorted_currncs = {
+unsorted_keys = {
     "RUB": "рубль",
     "AED": "ОАЭ дерхам",
     "CNY": "юань",
@@ -18,11 +18,11 @@ unsorted_currncs = {
     "KZT": "казахский тенге",
     "UZS": "узбекский сом"
 }
-a = unsorted_currncs.items()
+a = unsorted_keys.items()
 b = sorted(a)
 # print(dict(b))
 
-currencies = {
+keys = {
     'AED': 'ОАЭ дерхам',
     'AMD': 'армянский драм',
     'BGN': 'болгарский лев',
@@ -36,3 +36,20 @@ currencies = {
     'UZS': 'узбекский сом'
 }
 
+base = 'RUB'
+quote = "UZS"
+
+# if base in keys.keys():
+#     quote_ticker = base
+# else:
+#     raise KeyError("Валюта не поддерживается")
+
+try:
+    keys[base]
+except KeyError:
+    raise Exception("Ошибка")
+
+try:
+    keys[quote]
+except KeyError:
+    raise Exception("Ошибка")
