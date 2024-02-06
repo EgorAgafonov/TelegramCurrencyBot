@@ -25,11 +25,10 @@ def handle_start_help(message: telebot.types.Message):
 
 @bot.message_handler(commands=["values"])
 def handle_values(message: telebot.types.Message):
-    text = "Cписок доступных валют:"
+    text = "Список валют:"
     for i in currencies.items():
-        text = ' - '.join(i)
-
-    bot.send_message(message.chat.id, text)
+        res = [' - '.join(i)]
+        bot.send_message(message.chat.id, res)
 
 
 @bot.message_handler(content_types=["text"])
