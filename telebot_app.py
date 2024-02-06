@@ -37,28 +37,20 @@ def handle_values(message: telebot.types.Message):
 def currency_convertor(message: telebot.types.Message):
     try:
         values = message.text.split(' ')
-
         if len(values) != 3:
             raise ConvertionException(
-                f"{message.chat.username}, ты ввел(a) {values} значения(ий) вместо положенных трех 😅.\n "
+                f"Ошибка! Указано {len(values)} значения(ий) вместо положенных трех.\n"
+                f"Повнимательнее, соберись💪🏻🙂!\n"
                 f"Вот корректный пример ввода: '100 USD RUB'")
 
         quantity, base_code, target_code = values
         result = CryptoConverter.convert(quantity, base_code, target_code)
     except ConvertionException as e:
-        bot.reply_to(message, f"Не удалось обработать команду\n{e}")
+        bot.reply_to(message, f"{e}")
     except Exception as e:
-        bot.reply_to(message, f"Не удалось обработать команду\n{e}")
+        bot.reply_to(message, f"{e}")
     else:
         text = f"Стоимость покупки {quantity} {base_code} составит {round(result)} {target_code}."
         bot.send_message(message.chat.id, text)
-
-
-#
-#
-# @bot.message_handler(content_types=["photo"])
-# def voice_message_answer(message: telebot.types.Message):
-#     bot.reply_to(message, "xxxxxxxxxxxxxxxxxxxxxxxxxx")
-
 
 bot.polling(none_stop=True)
