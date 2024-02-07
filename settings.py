@@ -3,7 +3,7 @@ import os
 
 load_dotenv()
 TOKEN = os.getenv('TOKEN')
-api_key = os.getenv('API_KEY')
+API_KEY = os.getenv('API_KEY')
 
 unsorted_keys = {
     "RUB": "рубль",
@@ -18,9 +18,10 @@ unsorted_keys = {
     "KZT": "казахский тенге",
     "UZS": "узбекский сом"
 }
+
 a = unsorted_keys.items()
 b = sorted(a)
-# print(dict(b))
+print(b)
 
 keys = {
     'AED': 'ОАЭ дерхам',

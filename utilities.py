@@ -1,6 +1,6 @@
-import telebot
+import json
+import requests
 from settings import *
-from exchange_app import ExchangeRateAPI
 
 
 class ConvertionException(Exception):
@@ -10,12 +10,21 @@ class ConvertionException(Exception):
 class CryptoConverter:
 
     @staticmethod
-    def convert(quantity: str, base_code: str, target_code: str):
+    def convert(token: str, quantity: str, base_code: str, target_code: str, ) -> object:
+        """Метод отправки GET-запроса для предоставления сведений о стоимости(amount) одной/нескольких единиц базовой
+        валюты(base_code) по отношению к целевой валюте(target_code), т.е. стоимость покупки одной валюты в
+        единицах другой."""
 
-        currency_API = ExchangeRateAPI()
+        base_url = "https://v6.exchangerate-api.com/v6/"
+        response = requests.get(base_url + token + "pair/" + f"{base_code}/" + f"{target_code}/" + str(quantity))
 
-        status, result = currency_API.conversion_of_currency_pair(api_key, amount=quantity, base_code=base_code,
-                                                                  target_code=target_code)
+        status = response.status_code
+        result = ""
+        try:
+            result = response.json()
+        except json.JSONDecodeError:
+            result = response.text
+
         try:
             float(quantity)
         except ValueError:
@@ -29,7 +38,7 @@ class CryptoConverter:
                                       f"Вот корректный пример ввода: '100 USD RUB'")
         try:
             check_1 = keys[base_code]
-            check_1 = base_code.isalpha()
+            check_2 = base_code.isalpha()
         except KeyError:
             raise ConvertionException(f"Ошибка!\n"
                                       f"Указан неверный код валюты или числовое значение вместо буквенного: "
@@ -41,11 +50,7 @@ class CryptoConverter:
         except KeyError:
             raise ConvertionException(f"Ошибка!\n"
                                       f"Указан неверный код валюты или числовое значение вместо буквенного: "
-                                      f"'{base_code}'.\n"
+                                      f"'{target_code}'.\n"
                                       f"Список поддерживаемых валют доступен по команде '/values' .")
 
-        return result['conversion_result']
-
-
-
-
+        return status, result
