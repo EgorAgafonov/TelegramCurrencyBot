@@ -46,15 +46,21 @@ import easyocr
 
 def text_recognition(file_path):
     reader = easyocr.Reader(['ru', "en"])
-    result = reader.readtext(file_path, detail=0,  paragraph=True)
+    result = reader.readtext(file_path, detail=0, paragraph=True)
     return result
 
 
 def main():
     file_path = input("Enter a file path: ")
     recognized_text = text_recognition(file_path=file_path)
+
+    # 1 - вариант построчного вывода результатов OCR
     recognized_string = '\n'.join(recognized_text)
     print(recognized_string)
+
+    # 2 - вариант построчного вывода результатов OCR
+    for key in recognized_text:
+        print(key)
 
 
 if __name__ == "__main__":
