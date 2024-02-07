@@ -1,5 +1,6 @@
 import json
 import requests
+import easyocr
 from settings import *
 
 
@@ -55,3 +56,7 @@ class CryptoConverter:
                                       f"Список поддерживаемых валют доступен по команде '/values' .")
 
         return status, result
+
+
+class TextImageReader:
+
