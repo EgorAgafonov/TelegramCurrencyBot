@@ -23,10 +23,8 @@ def handle_start_help(message: telebot.types.Message):
 
 @bot.message_handler(commands=["values"])
 def handle_values(message: telebot.types.Message):
-    text = "Список валют:"
-    for i in keys.items():
-        res = [' - '.join(i)]
-        bot.send_message(message.chat.id, res)
+    text = "Список валют:\n" + curr_str
+    bot.send_message(message.chat.id, text)
 
 
 @bot.message_handler(content_types=["text"])
@@ -53,4 +51,4 @@ def currency_convertor(message: telebot.types.Message):
         bot.send_message(message.chat.id, text)
 
 
-bot.polling(none_stop=True)
+bot.polling(none_stop=True, timeout=120,  long_polling_timeout=120)

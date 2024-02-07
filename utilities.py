@@ -26,7 +26,8 @@ class CryptoConverter:
             result = response.text
 
         try:
-            float(quantity)
+            check_1 = float(quantity)
+            check_2 = quantity.isdigit()
         except ValueError:
             raise ConvertionException(f"Ошибка!\n"
                                       f"Указанное значение: '{quantity}' не является числом.")
