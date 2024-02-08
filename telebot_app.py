@@ -10,7 +10,7 @@ bot = telebot.TeleBot(TOKEN)
 def handle_start_help(message: telebot.types.Message):
     text_info = (f"Приветствую тебя, {message.chat.username}!\n"
                  "Я - твой электронный бот-помощник🤖!\n"
-                 "Мой создатель - Агафонов Егор😊.\n"
+                 "Мой создатель - Агафонов Е.А.😊.\n"
                  "Пока я умею следующее:\n\n"
                  "1️⃣ Сообщать актуальный курс валют и рассчитывать стоимость ее покупки:\n"
                  "Для запроса курса/стоимости валюты в поле ввода набери и отправь (пример):\n"
@@ -54,7 +54,7 @@ def currency_convertor(message: telebot.types.Message):
     except Exception as e:
         bot.reply_to(message, f"{e}")
     else:
-        text = f"Стоимость покупки {quantity} {base_code} составит {round(result['conversion_result'])} {target_code}."
+        text = f"Стоимость покупки {quantity} {base_code} составит {round(result['conversion_result'], 2)} {target_code}."
         bot.send_message(message.chat.id, text)
 
 
