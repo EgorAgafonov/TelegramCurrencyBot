@@ -51,21 +51,19 @@ import os
 #     return result
 #
 #
-# def main():
-#     file_object = os.path.split("\\chat_images\\test.png")
-#     recognized_text = text_recognition(file_path=file_object)
-#     print(recognized_text)
-#
-#     # 1 - вариант построчного вывода результатов OCR
-#     recognized_string = '\n'.join(recognized_text)
-#     print(recognized_string)
+def main():
+    file_object = os.path.split("\\chat_images\\test.png")
+    recognized_text = text_recognition(file_path=file_object)
+    print(recognized_text)
+
+    # 1 - вариант построчного вывода результатов OCR
+    recognized_string = '\n'.join(recognized_text)
+    print(recognized_string)
 
     # 2 - вариант построчного вывода результатов OCR
-    # for key in recognized_text:
-    #     print(key)
+    for key in recognized_text:
+        print(key)
 
 
-# if __name__ == "__main__":
-#     main()
-
-print(os.path.exists("C:\\Users\\agafo\\PycharmProjects\\TelegramCurrencyBot\\chat_images\\"))
+if __name__ == "__main__":
+    main()
