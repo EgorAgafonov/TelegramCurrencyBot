@@ -45,25 +45,27 @@ import os
 #         print(f"{link.getText()}\n" + f"{base + link.get('href')}\n")
 
 
-def text_recognition(file_path):
-    reader = easyocr.Reader(['ru', "en"])
-    result = reader.readtext(file_path, detail=0, paragraph=True)
-    return result
-
-
-def main():
-    file_object = os.path.abspath("C:\\Users\\agafo\\PycharmProjects\\TelegramCurrencyBot\\text_rec.jpg")
-    recognized_text = text_recognition(file_path=file_object)
-    print(recognized_text)
-
-    # 1 - вариант построчного вывода результатов OCR
-    recognized_string = '\n'.join(recognized_text)
-    print(recognized_string)
+# def text_recognition(file_path):
+#     reader = easyocr.Reader(['ru', "en"])
+#     result = reader.readtext(file_path, detail=0, paragraph=True)
+#     return result
+#
+#
+# def main():
+#     file_object = os.path.split("\\chat_images\\test.png")
+#     recognized_text = text_recognition(file_path=file_object)
+#     print(recognized_text)
+#
+#     # 1 - вариант построчного вывода результатов OCR
+#     recognized_string = '\n'.join(recognized_text)
+#     print(recognized_string)
 
     # 2 - вариант построчного вывода результатов OCR
     # for key in recognized_text:
     #     print(key)
 
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
+
+print(os.path.exists("C:\\Users\\agafo\\PycharmProjects\\TelegramCurrencyBot\\chat_images\\"))

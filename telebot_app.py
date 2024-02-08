@@ -1,7 +1,7 @@
 import telebot
 from settings import *
 from utilities import ConvertionException, CryptoConverter, TextImageReader
-import time
+from datetime import *
 
 bot = telebot.TeleBot(TOKEN)
 
@@ -57,12 +57,15 @@ def recognizing_text(message: telebot.types.Message):
     text_pictures = message.photo[-1]
     file_info = bot.get_file(text_pictures.file_id)
     downloaded_file = bot.download_file(file_info.file_path)
-    save_path = os.path.abspath(f"C:\\Users\\agafo\\PycharmProjects\\TelegramCurrencyBot\\output_file.png")
+    save_path = os.path.join(IMAGE_PATH, "input_chat_image.bmp")
+
     with open(save_path, 'wb') as new_file:
         new_file.write(downloaded_file)
+    bot.reply_to(message, f"{message.chat.username}, приступаю к распознаванию текста💪🏻!\n"
+                          f" Потребуется время, просьба чуть-чуть подождать,...")
     result = TextImageReader.text_recognition(save_path)
-    # text = "Текст распознан:\n"
-    print(result)
+    text = "Готово🙂:"
+    bot.send_message(message.chat.id, text)
     bot.send_message(message.chat.id, result)
 
 
