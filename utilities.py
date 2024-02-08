@@ -60,3 +60,13 @@ class CryptoConverter:
 
 class TextImageReader:
 
+    @staticmethod
+    def text_recognition(file_path) -> str:
+        reader = easyocr.Reader(['ru', "en"])
+        result = reader.readtext(file_path, detail=0, paragraph=True)
+        recognized_string = '\n'.join(result)
+        return recognized_string
+
+
+
+

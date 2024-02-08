@@ -1,6 +1,7 @@
 import telebot
 from settings import *
-from utilities import ConvertionException, CryptoConverter
+from utilities import ConvertionException, CryptoConverter, TextImageReader
+import time
 
 bot = telebot.TeleBot(TOKEN)
 
@@ -51,4 +52,19 @@ def currency_convertor(message: telebot.types.Message):
         bot.send_message(message.chat.id, text)
 
 
-bot.polling(none_stop=True, timeout=120,  long_polling_timeout=120)
+@bot.message_handler(content_types=["photo"])
+def recognizing_text(message: telebot.types.Message):
+    text_pictures = message.photo[-1]
+    file_info = bot.get_file(text_pictures.file_id)
+    downloaded_file = bot.download_file(file_info.file_path)
+    save_path = os.path.abspath(f"C:\\Users\\agafo\\PycharmProjects\\TelegramCurrencyBot\\output_file.png")
+    with open(save_path, 'wb') as new_file:
+        new_file.write(downloaded_file)
+    result = TextImageReader.text_recognition(save_path)
+    # text = "Текст распознан:\n"
+    print(result)
+    bot.send_message(message.chat.id, result)
+
+
+bot.polling(none_stop=True)
+

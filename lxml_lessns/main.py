@@ -3,6 +3,7 @@ import lxml.html
 from lxml import etree
 from bs4 import BeautifulSoup
 import easyocr
+import os
 
 
 # 1 -
@@ -51,16 +52,17 @@ def text_recognition(file_path):
 
 
 def main():
-    file_path = input("Enter a file path: ")
-    recognized_text = text_recognition(file_path=file_path)
+    file_object = os.path.abspath("C:\\Users\\agafo\\PycharmProjects\\TelegramCurrencyBot\\text_rec.jpg")
+    recognized_text = text_recognition(file_path=file_object)
+    print(recognized_text)
 
     # 1 - вариант построчного вывода результатов OCR
     recognized_string = '\n'.join(recognized_text)
     print(recognized_string)
 
     # 2 - вариант построчного вывода результатов OCR
-    for key in recognized_text:
-        print(key)
+    # for key in recognized_text:
+    #     print(key)
 
 
 if __name__ == "__main__":
