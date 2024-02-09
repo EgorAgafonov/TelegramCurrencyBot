@@ -62,6 +62,10 @@ class TextImageReader:
 
     @staticmethod
     def text_recognition(file_path) -> str:
+        """Метод для оптического распознавания текста(OCR) на изображении, переданного пользователем в чат бота.
+        Возвращает распознанный текст в виде строкового, машинописного кода (стандартные текстовые символы букв, цифр,
+        знаков пунктуации)."""
+
         reader = easyocr.Reader(['ru', "en"])
         result = reader.readtext(file_path, detail=0, paragraph=True)
         recognized_string = '\n'.join(result)

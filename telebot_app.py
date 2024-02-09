@@ -70,7 +70,7 @@ def recognizing_text(message: telebot.types.Message):
     with open(save_path, 'wb') as new_file:
         new_file.write(downloaded_file)
     bot.reply_to(message, f"{message.chat.username}, приступаю к распознаванию текста💪🏻!\n"
-                          f" Потребуется время, просьба чуть-чуть подождать,...")
+                          f" Потребуется время, просьба чуть-чуть подождать...")
     result = TextImageReader.text_recognition(save_path)
     text = "Готово🙂:"
     bot.send_message(message.chat.id, text)
