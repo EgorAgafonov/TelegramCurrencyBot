@@ -5,7 +5,6 @@ from bs4 import BeautifulSoup
 import easyocr
 import os
 
-
 # 1 -
 # - пример парсинга содержимого HTML-страницы (заранее сохраненной в корневой папке проекта) с помощью иблиотеки lxml:
 
@@ -51,19 +50,26 @@ import os
 #     return result
 #
 #
-def main():
-    file_object = os.path.split("\\chat_images\\test.png")
-    recognized_text = text_recognition(file_path=file_object)
-    print(recognized_text)
+# def main():
+#     file_object = os.path.split("\\chat_images\\test.png")
+#     recognized_text = text_recognition(file_path=file_object)
+#     print(recognized_text)
+#
+#     # 1 - вариант построчного вывода результатов OCR
+#     recognized_string = '\n'.join(recognized_text)
+#     print(recognized_string)
+#
+#     # 2 - вариант построчного вывода результатов OCR
+#     for key in recognized_text:
+#         print(key)
+#
+#
+# if __name__ == "__main__":
+#     main()
 
-    # 1 - вариант построчного вывода результатов OCR
-    recognized_string = '\n'.join(recognized_text)
-    print(recognized_string)
 
-    # 2 - вариант построчного вывода результатов OCR
-    for key in recognized_text:
-        print(key)
+message = "ru en"
+languages = []
+values = message.split(' ')
 
-
-if __name__ == "__main__":
-    main()
+reader = easyocr.Reader(values)

@@ -48,8 +48,8 @@ def currency_convertor(message: telebot.types.Message):
 
         quantity, base_code, target_code = values
 
-        status, result = CryptoConverter.convert(token=API_KEY, quantity=quantity, base_code=base_code,
-                                                 target_code=target_code)
+        status, result = CryptoConverter.convert(token=API_KEY, quantity=quantity.upper(), base_code=base_code.upper(),
+                                                 target_code=target_code.upper())
 
     except ConvertionException as e:
         bot.reply_to(message, f"{e}")

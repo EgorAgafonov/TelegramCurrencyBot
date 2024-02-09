@@ -61,12 +61,12 @@ class CryptoConverter:
 class TextImageReader:
 
     @staticmethod
-    def text_recognition(file_path) -> str:
+    def text_recognition(file_path: str) -> str:
         """Метод для оптического распознавания текста(OCR) на изображении, переданного пользователем в чат бота.
-        Возвращает распознанный текст в виде строкового, машинописного кода (стандартные текстовые символы букв, цифр,
-        знаков пунктуации)."""
+        Возвращает распознанный текст в виде строкового, машинописного кода. В атрибут file_path передается строковое
+        значение пути к файлу для распознавания. """
 
-        reader = easyocr.Reader(['ru', "en"])
+        reader = easyocr.Reader(["ru", "en"])
         result = reader.readtext(file_path, detail=0, paragraph=True)
         recognized_string = '\n'.join(result)
         return recognized_string
