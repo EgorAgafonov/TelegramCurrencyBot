@@ -48,8 +48,8 @@ import os
 #     reader = easyocr.Reader(['ru', "en"])
 #     result = reader.readtext(file_path, detail=0, paragraph=True)
 #     return result
-#
-#
+
+
 # def main():
 #     file_object = os.path.split("\\chat_images\\test.png")
 #     recognized_text = text_recognition(file_path=file_object)
@@ -68,9 +68,10 @@ import os
 #     main()
 
 
-message = "en ru"
-languages = []
-values = message.split(' ')
-print(values)
-
-reader = easyocr.Reader(values)
+message = "ru EN"
+langs = []
+msg_list = message.split(' ')
+for i in msg_list:
+    langs.append(i.lower())
+print(langs)
+reader = easyocr.Reader(langs)
