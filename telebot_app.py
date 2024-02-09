@@ -41,7 +41,9 @@ def currency_convertor(message: telebot.types.Message):
             raise ConvertionException(
                 f"Ошибка!\n"
                 f"Указано {len(values)} значения(ий) вместо положенных трех.\n"
-                f"ВАЖНО: Между строками допускается строго только один отступ!\n"
+                f"ВАЖНО:\n"
+                f"Между строками допускается строго только один пробел!\n"
+                f"Недопустимо использовать пробелы в начале и/или конце строки\n"
                 f"Вот корректный пример ввода: '100 USD RUB'")
 
         quantity, base_code, target_code = values
