@@ -68,8 +68,9 @@ import os
 #     main()
 
 
-message = "ru en"
+message = "en ru"
 languages = []
 values = message.split(' ')
+print(values)
 
 reader = easyocr.Reader(values)
