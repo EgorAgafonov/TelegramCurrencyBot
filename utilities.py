@@ -70,7 +70,3 @@ class TextImageReader:
         result = reader.readtext(file_path, detail=0, paragraph=True)
         recognized_string = '\n'.join(result)
         return recognized_string
-
-
-
-print(f"__name__ utilities.py is {__name__}")

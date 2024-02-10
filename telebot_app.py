@@ -5,8 +5,6 @@ from datetime import *
 
 bot = telebot.TeleBot(TOKEN)
 
-print(f"__name__ telebot_app.py is {__name__}")
-
 
 @bot.message_handler(commands=['start', 'help'])
 def handle_start_help(message: telebot.types.Message):
@@ -74,7 +72,6 @@ def recognizing_text(message: telebot.types.Message):
     file_info = bot.get_file(text_pictures.file_id)
     downloaded_file = bot.download_file(file_info.file_path)
     save_path = RECOGN_IMAGE_PATH
-
     with open(save_path, 'wb') as new_file:
         new_file.write(downloaded_file)
 

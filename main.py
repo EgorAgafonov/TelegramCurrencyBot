@@ -66,5 +66,3 @@ with open(file, 'w', encoding='windows-1251') as f:
 
 # if __name__ == "__main__":
 #     main()
-
-print(f"__name__ main.py is {__name__}")
