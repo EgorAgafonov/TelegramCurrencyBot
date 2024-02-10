@@ -31,25 +31,25 @@ import os
 # - пример парсинга содержимого HTML-страницы (заранее сохраненной в корневой папке проекта) с помощью библиотеки
 # bs4 import BeautifulSoup:
 
-# base = 'https://ru.stackoverflow.com'
-# html = requests.get(base).content
-# soup = BeautifulSoup(html, 'lxml')
-# div_container = soup.find('div', id='question-mini-list')
-# a_tag = div_container.findAll('a', class_='s-link')
-# file = 'lxml_lessons.txt'
-# with open(file, 'w', encoding='windows-1251') as f:
-#     for link in a_tag:
-#         result = f"\n{link.getText()}\n" + f"\n{base + link.get('href')}\n"
-#         f.write(result)
-#         print(f"{link.getText()}\n" + f"{base + link.get('href')}\n")
+base = 'https://ru.stackoverflow.com'
+html = requests.get(base).content
+soup = BeautifulSoup(html, 'lxml')
+div_container = soup.find('div', id='question-mini-list')
+a_tag = div_container.findAll('a', class_='s-link')
+file = 'lxml_lessons.txt'
+with open(file, 'w', encoding='windows-1251') as f:
+    for link in a_tag:
+        result = f"\n{link.getText()}\n" + f"\n{base + link.get('href')}\n"
+        f.write(result)
+        print(f"{link.getText()}\n" + f"{base + link.get('href')}\n")
 
 
 # def text_recognition(file_path):
 #     reader = easyocr.Reader(['ru', "en"])
 #     result = reader.readtext(file_path, detail=0, paragraph=True)
 #     return result
-
-
+#
+#
 # def main():
 #     file_object = os.path.split("\\chat_images\\test.png")
 #     recognized_text = text_recognition(file_path=file_object)
@@ -62,16 +62,9 @@ import os
 #     # 2 - вариант построчного вывода результатов OCR
 #     for key in recognized_text:
 #         print(key)
-#
-#
+
+
 # if __name__ == "__main__":
 #     main()
 
-
-message = "ru EN"
-langs = []
-msg_list = message.split(' ')
-for i in msg_list:
-    langs.append(i.lower())
-print(langs)
-reader = easyocr.Reader(langs)
+print(f"__name__ main.py is {__name__}")

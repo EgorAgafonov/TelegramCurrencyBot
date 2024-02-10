@@ -5,6 +5,7 @@ load_dotenv()
 TOKEN = os.getenv('TOKEN')
 API_KEY = os.getenv('API_KEY')
 IMAGE_PATH = os.getenv("INPUT_CHAT_IMAGE")
+RECOGN_IMAGE_PATH = os.path.join(IMAGE_PATH, "input_chat_image.bmp")
 
 keys = {
     'AED': 'ОАЭ дерхам',

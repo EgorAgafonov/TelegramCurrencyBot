@@ -73,4 +73,4 @@ class TextImageReader:
 
 
 
-
+print(f"__name__ utilities.py is {__name__}")
