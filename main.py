@@ -5,10 +5,8 @@ from bs4 import BeautifulSoup
 import easyocr
 import sys
 import segno
+import io
 from PIL import Image
-import qrcode_artistic
-
-
 
 # 1 -
 # - ?????? ???????? ??????????? HTML-???????? (??????? ??????????? ? ???????? ????? ???????) ? ??????? ????????? lxml:
@@ -72,7 +70,23 @@ import qrcode_artistic
 #     main()
 
 
-qrcode_1 = segno.make_qr("https://github.com/EgorAgafonov/TelegramCurrencyBot.git")
-img = qrcode_1.to
-img.save("qrcode_scale_30.png", scale=20, light="lightgreen")
+# qrcode_1 = segno.make_qr("https://github.com/EgorAgafonov/TelegramCurrencyBot.git")
+# img = qrcode_1.to_pil(scale=25).rotate(45, expand=True)
+# img.save("qrcode_scale_30.png", light="lightgreen")
 
+
+out = io.BytesIO()
+# Nothing special here, let Segno generate the QR code and save it as PNG in a buffer
+segno.make_qr("https://github.com/EgorAgafonov/TelegramCurrencyBot.git", error='h').save(out, scale=25, kind='png')
+out.seek(0)  # Important to let Pillow load the PNG
+img = Image.open(out)
+img = img.convert('RGB')  # Ensure colors for the output
+img_width, img_height = img.size
+logo_max_size = img_height // 3  # May use a fixed value as well
+logo_img = Image.open('git_hub_logo.png')  # The logo
+# Resize the logo to logo_max_size
+logo_img.thumbnail((logo_max_size, logo_max_size), Image.Resampling.LANCZOS)
+# Calculate the center of the QR code
+box = ((img_width - logo_img.size[0]) // 2, (img_height - logo_img.size[1]) // 2)
+img.paste(logo_img, box)
+img.save('qrcode_with_logo.png')
