@@ -1,4 +1,5 @@
 import telebot
+from telebot import types
 from settings import *
 from utilities import ConvertionException, CryptoConverter, TextImageReader, QRcodeMaker
 from datetime import *
@@ -8,7 +9,7 @@ bot = telebot.TeleBot(TOKEN)
 
 
 @bot.message_handler(commands=['start', 'help'])
-def handle_start_help(message: telebot.types.Message):
+def start(message: telebot.types.Message):
     text_info = (f"Приветствую тебя, {message.chat.username}!\n"
                  "Я - твой электронный бот-помощник!\n"
                  "Мой создатель - Агафонов Е.А.🙂\n\n"
@@ -25,7 +26,13 @@ def handle_start_help(message: telebot.types.Message):
                  "<u>ВАЖНО:</u>\n"
                  "Изображение должно быть читаемым и без искажений, текст отображается под прямым углом к "
                  "читателю👍🏻.")
-    bot.send_message(message.chat.id, text_info, parse_mode='html')
+    markup = types.ReplyKeyboardMarkup()
+    btn_1 = types.KeyboardButton("Распознать текст (OCR)")
+    markup.row(btn_1)
+    btn_2 = types.KeyboardButton("Курс/Стоимость валюты")
+    btn_3 = types.KeyboardButton("Создать QR-код")
+    markup.row(btn_2, btn_3)
+    bot.send_message(message.chat.id, text_info, parse_mode='html', reply_markup=markup)
 
 
 @bot.message_handler(commands=["values"])
@@ -42,15 +49,13 @@ def handle_langs(message: telebot.types.Message):
 
 @bot.message_handler(content_types=["text"])
 def make_QR_code(message: telebot.types.Message):
-    prefixes = ("https://", "http://", "https://www.", "www.")
-    if message.text.startswith(prefixes):
-        bot.reply_to(message, f"{message.chat.username}, приступаю к генерации QR-кода🙂!\n"
-                              f" Потребуется время, просьба чуть-чуть подождать...")
-        html_link = message.text
-        qr_code = QRcodeMaker.make_QR_code(html_link)
-        text = "Готово👌🏻:"
-        bot.send_message(message.chat.id, text)
-        bot.send_photo(message.chat.id, qr_code)
+    if message.text == "Создать QR-код":
+        text = (f"{message.chat.username}, вставь в поле ввода url-адрес необходимого веб-сайта для генерации qr-кода.\n"
+                f"<b>ВАЖНО:\n1) строка с адресом должна ОБЯЗАТЕЛЬНО содержать полный путь к сайту через 'https://' "
+                f"(например):<u>https://www.google.ru/</u>;\n2) лишние пробелы в начале/конце адреса отсутствуют.</b>")
+        bot.send_message(message.chat.id, text, parse_mode='html')
+        bot.register_next_step_handler(message, crate_qr_code)
+
     else:
         try:
             values = message.text.split(' ')
@@ -110,6 +115,14 @@ def enter_langs(message):
     text = "Готово👌🏻:   "
     bot.send_message(message.chat.id, text)
     bot.send_message(message.chat.id, result)
+
+
+def crate_qr_code(message):
+    html_link = message.text
+    qr_code = QRcodeMaker.make_QR_code(html_link)
+    text = "Готово👌🏻:"
+    bot.send_message(message.chat.id, text)
+    bot.send_photo(message.chat.id, qr_code)
 
 
 bot.polling(none_stop=True)
