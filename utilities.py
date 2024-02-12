@@ -2,6 +2,9 @@ import json
 import requests
 import easyocr
 from settings import *
+import segno
+import io
+from PIL import Image
 
 
 class ConvertionException(Exception):
@@ -70,3 +73,13 @@ class TextImageReader:
         result = reader.readtext(file_path, detail=0, paragraph=True)
         recognized_string = '\n'.join(result)
         return recognized_string
+
+
+class QRcodeMaker:
+    @staticmethod
+    def make_QR_code(content):
+        qrcode = segno.make_qr(content, error='h')
+        qrcode.save("qrcode_scale_25.png", scale=25, light='lightgreen')
+        result = open("qrcode_scale_25.png", mode="rb")
+        return result
+

@@ -1,7 +1,8 @@
 import telebot
 from settings import *
-from utilities import ConvertionException, CryptoConverter, TextImageReader
+from utilities import ConvertionException, CryptoConverter, TextImageReader, QRcodeMaker
 from datetime import *
+import urllib3
 
 bot = telebot.TeleBot(TOKEN)
 
@@ -40,30 +41,40 @@ def handle_langs(message: telebot.types.Message):
 
 
 @bot.message_handler(content_types=["text"])
-def currency_convertor(message: telebot.types.Message):
-    try:
-        values = message.text.split(' ')
-        if len(values) != 3:
-            raise ConvertionException(
-                f"Ошибка!\n"
-                f"Указано {len(values)} значения(ий) вместо положенных трех.\n"
-                f"ВАЖНО:\n"
-                f"Между строками допускается строго только один пробел!\n"
-                f"Недопустимо использовать пробелы в начале и/или конце строки\n"
-                f"Вот корректный пример ввода: '100 USD RUB'")
-
-        quantity, base_code, target_code = values
-
-        status, result = CryptoConverter.convert(token=API_KEY, quantity=quantity.upper(), base_code=base_code.upper(),
-                                                 target_code=target_code.upper())
-
-    except ConvertionException as e:
-        bot.reply_to(message, f"{e}")
-    except Exception as e:
-        bot.reply_to(message, f"{e}")
-    else:
-        text = f"Стоимость покупки {quantity} {base_code} составит {round(result['conversion_result'], 2)} {target_code}."
+def make_QR_code(message: telebot.types.Message):
+    prefixes = ("https://", "http://", "https://www.", "www.")
+    if message.text.startswith(prefixes):
+        bot.reply_to(message, f"{message.chat.username}, приступаю к генерации QR-кода🙂!\n"
+                              f" Потребуется время, просьба чуть-чуть подождать...")
+        html_link = message.text
+        qr_code = QRcodeMaker.make_QR_code(html_link)
+        text = "Готово👌🏻:"
         bot.send_message(message.chat.id, text)
+        bot.send_photo(message.chat.id, qr_code)
+    else:
+        try:
+            values = message.text.split(' ')
+            if len(values) != 3:
+                raise ConvertionException(
+                    f"Ошибка!\n"
+                    f"Указано {len(values)} значения(ий) вместо положенных трех.\n"
+                    f"ВАЖНО:\n"
+                    f"Между строками допускается строго только один пробел!\n"
+                    f"Недопустимо использовать пробелы в начале и/или конце строки\n"
+                    f"Вот корректный пример ввода: '100 USD RUB'")
+
+            quantity, base_code, target_code = values
+
+            status, result = CryptoConverter.convert(token=API_KEY, quantity=quantity.upper(), base_code=base_code.upper(),
+                                                     target_code=target_code.upper())
+
+        except ConvertionException as e:
+            bot.reply_to(message, f"{e}")
+        except Exception as e:
+            bot.reply_to(message, f"{e}")
+        else:
+            text = f"Стоимость покупки {quantity} {base_code} составит {round(result['conversion_result'], 2)} {target_code}."
+            bot.send_message(message.chat.id, text)
 
 
 @bot.message_handler(content_types=["photo"])
