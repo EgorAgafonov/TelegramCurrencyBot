@@ -5,6 +5,8 @@ from bs4 import BeautifulSoup
 import easyocr
 import sys
 import segno
+from PIL import Image
+import qrcode_artistic
 
 
 
@@ -71,6 +73,6 @@ import segno
 
 
 qrcode_1 = segno.make_qr("https://github.com/EgorAgafonov/TelegramCurrencyBot.git")
-qrcode_1.save("qrcode_1.png")
-qrcode_1.show()
+img = qrcode_1.to
+img.save("qrcode_scale_30.png", scale=20, light="lightgreen")
 
