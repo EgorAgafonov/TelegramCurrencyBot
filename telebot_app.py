@@ -28,10 +28,11 @@ def start(message: telebot.types.Message):
                  "читателю👍🏻.")
     markup = types.ReplyKeyboardMarkup()
     btn_1 = types.KeyboardButton("Распознать текст (OCR)")
-    markup.row(btn_1)
     btn_2 = types.KeyboardButton("Курс/Стоимость валюты")
+    markup.row(btn_1, btn_2)
     btn_3 = types.KeyboardButton("Создать QR-код")
-    markup.row(btn_2, btn_3)
+    btn_4 = types.KeyboardButton("Функция не назначена")
+    markup.row(btn_3, btn_4)
     bot.send_message(message.chat.id, text_info, parse_mode='html', reply_markup=markup)
 
 
