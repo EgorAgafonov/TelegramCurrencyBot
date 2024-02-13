@@ -23,14 +23,9 @@ def start(message: telebot.types.Message):
     btn_2 = types.KeyboardButton("Распознать текст (OCR)")
     markup.row(btn_1, btn_2)
     btn_3 = types.KeyboardButton("Создать QR-код")
-    markup.row(btn_3)
+    btn_4 = types.KeyboardButton("/start")
+    markup.row(btn_3, btn_4)
     bot.send_message(message.chat.id, text_info, parse_mode='html', reply_markup=markup)
-
-
-@bot.message_handler(commands=["values"])
-def handle_values(message: telebot.types.Message):
-    text = "Список валют:\n" + curr_str
-    bot.send_message(message.chat.id, text)
 
 
 @bot.message_handler(commands=["langs"])
@@ -67,21 +62,23 @@ def text_messages_handler(message: telebot.types.Message):
         trigger_msg_curr = (
             f"{message.chat.username}, для запроса курса/стоимости валюты в поле ввода набери и отправь "
             f"(например):\n"
-            "<b>100 USD RUB</b>\n"
-            "(где 100 - это количество USD (Долларов США) для перевода в RUB (Российские рубли).\n"
-            "Для вызова списка доступных валют (ISO 4217) в поле ввода набери и отправь команду '/values'.\n")
+            f"<b>100 USD RUB</b>\n"
+            f"(где 100 - это количество USD (Долларов США) для перевода в RUB (Российские рубли).\n"
+            f"Cписок доступных для конвертации валют:\n"
+            f"{curr_str}")
         bot.send_message(message.chat.id, trigger_msg_curr, parse_mode="html")
         bot.register_next_step_handler(message, convert_currencies)
 
     else:
-        text_error = (f"{message.chat.username}, ты неверно указал команду или ввел недопустимое значение😕!\n"
+        text_error = (f"{message.chat.username}, указанная команда не соответствует условиям текущего запроса или "
+                      f"введено недопустимое значение😕!\n"
                       f"Через поле ввода сообщения отправь (нажми на экране) '/start' и внимательно следуй "
                       f"инструкциям.\n"
                       f"Все получится😊!")
         bot.send_message(message.chat.id, text_error)
 
 
-# @bot.message_handler(content_types=["photo"])
+@bot.message_handler(content_types=["photo"])
 def set_recogn_langs_handler(message: telebot.types.Message):
     text_pictures = message.photo[-1]
     file_info = bot.get_file(text_pictures.file_id)
@@ -91,14 +88,12 @@ def set_recogn_langs_handler(message: telebot.types.Message):
         new_file.write(downloaded_file)
     text_msg = (f"{message.chat.username}, укажи название языка на отправленном тобой  изображении.\n"
                 f"В поле ввода набери и отправь (например):\n"
-                f"<b>ru</b> - если изображение содержит символы только одного языка (например только русского);\n"
-                f"<b>ru en</b> - если изображение содержит символы нескольких языков (например и русского, и "
+                f"<b>ru</b> - если изображение содержит символы букв только одного языка (например только русского);\n"
+                f"<b>ru en</b> - если изображение содержит символы букв нескольких языков (например и русского, и "
                 f"английского).\n"
-                f"Для вызова списка доступных языков в поле ввода набери и отправь команду '/langs';\n"
-                f"ВАЖНО:\n"
-                f"Между названиями языков допускается СТРОГО только один пробел!\n"
-                f"Недопустимо использовать пробелы в начале и/или конце строки!\n"
-                f"Вот корректный пример ввода (например): 'ru en', либо только 'ru'")
+                f"Вот корректный пример ввода (например): <b>de fr</b>, либо только <b>ru</b>."
+                f"Список доступных для распознавания языков:\n"
+                f"{langs_str}")
     bot.send_message(message.chat.id, text_msg, parse_mode="html")
     bot.register_next_step_handler(message, image_OCR_recognition)
 
@@ -112,13 +107,10 @@ def image_OCR_recognition(message):
                           f" Потребуется время, просьба чуть-чуть подождать...")
     result = TextImageReader.text_recognition(RECOGN_IMAGE_PATH, langs)
     text = "Готово👌🏻:"
-    markup = types.ReplyKeyboardMarkup()
-    btn_start = types.KeyboardButton("/start")
-    markup.row(btn_start)
     bot.send_message(message.chat.id, text)
-    bot.send_message(message.chat.id, result)
-    text = f"{message.chat.username} Для возврата в меню выбора действий нажми кнопку /start 🙂."
-    bot.send_message(message.chat.id, text, reply_markup=markup)
+    bot.send_message(message.chat.id, text=f"<b>{result}</b>", parse_mode="html")
+    bot.send_message(message.chat.id, text="Для продолжения нажми кнопку /start в меню или набери и отправь "
+                                           "команду: /start в поле для ввода сообщений😊!")
 
 
 def create_qr_code(message):
@@ -129,7 +121,7 @@ def create_qr_code(message):
     bot.send_photo(message.chat.id, qr_code)
 
 
-def convert_currencies(message):
+def convert_currencies(message: telebot.types.Message):
     try:
         values = message.text.split(' ')
         if len(values) != 3:
@@ -153,6 +145,8 @@ def convert_currencies(message):
     else:
         text = f"Стоимость покупки {quantity} {base_code} составит {round(result['conversion_result'], 2)} {target_code}."
         bot.send_message(message.chat.id, text)
+        bot.send_message(message.chat.id, text="Для продолжения нажми кнопку /start в меню или набери и отправь "
+                                               "команду: /start в поле для ввода сообщений😊!")
 
 
 bot.polling(none_stop=True)

@@ -47,16 +47,14 @@ class CryptoConverter:
         except KeyError:
             raise ConvertionException(f"Ошибка!\n"
                                       f"Указан неверный код валюты или числовое значение вместо буквенного: "
-                                      f"{base_code}.\n"
-                                      f"Список поддерживаемых валют доступен по команде '/values' .")
+                                      f"{base_code}.\n")
         try:
             check_1 = keys[target_code]
             check_2 = target_code.isalpha()
         except KeyError:
             raise ConvertionException(f"Ошибка!\n"
                                       f"Указан неверный код валюты или числовое значение вместо буквенного: "
-                                      f"'{target_code}'.\n"
-                                      f"Список поддерживаемых валют доступен по команде '/values' .")
+                                      f"'{target_code}'.\n")
 
         return status, result
 
