@@ -19,8 +19,8 @@ def start(message: telebot.types.Message):
                  "3️⃣ Генерировать QR-код с ссылкой на веб-сайт или зашифрованными данными.\n"
                  "Для запроса нажми кнопку <b><u>'Создать QR-код'</u>;</b>")
     markup = types.ReplyKeyboardMarkup()
-    btn_1 = types.KeyboardButton("Распознать текст (OCR)")
-    btn_2 = types.KeyboardButton("Курс/Стоимость валюты")
+    btn_1 = types.KeyboardButton("  Курс/Стоимость валюты")
+    btn_2 = types.KeyboardButton("Распознать текст (OCR)")
     markup.row(btn_1, btn_2)
     btn_3 = types.KeyboardButton("Создать QR-код")
     markup.row(btn_3)
@@ -81,7 +81,7 @@ def text_messages_handler(message: telebot.types.Message):
         bot.send_message(message.chat.id, text_error)
 
 
-@bot.message_handler(content_types=["photo"])
+# @bot.message_handler(content_types=["photo"])
 def set_recogn_langs_handler(message: telebot.types.Message):
     text_pictures = message.photo[-1]
     file_info = bot.get_file(text_pictures.file_id)
@@ -108,12 +108,17 @@ def image_OCR_recognition(message):
     langs = []
     for i in msg_list:
         langs.append(i.lower())
-    bot.reply_to(message, f"{message.chat.username}, приступаю к распознаванию текста??!\n"
+    bot.reply_to(message, f"{message.chat.username}, приступаю к распознаванию текста🤓!\n"
                           f" Потребуется время, просьба чуть-чуть подождать...")
     result = TextImageReader.text_recognition(RECOGN_IMAGE_PATH, langs)
-    text = "Готово👌🏻:   "
+    text = "Готово👌🏻:"
+    markup = types.ReplyKeyboardMarkup()
+    btn_start = types.KeyboardButton("/start")
+    markup.row(btn_start)
     bot.send_message(message.chat.id, text)
     bot.send_message(message.chat.id, result)
+    text = f"{message.chat.username} Для возврата в меню выбора действий нажми кнопку /start 🙂."
+    bot.send_message(message.chat.id, text, reply_markup=markup)
 
 
 def create_qr_code(message):
