@@ -74,7 +74,11 @@ def text_messages_handler(message: telebot.types.Message):
         bot.register_next_step_handler(message, convert_currencies)
 
     else:
-        pass
+        text_error = (f"{message.chat.username}, ты неверно указал команду или ввел недопустимое значение😕!\n"
+                      f"Через поле ввода сообщения отправь (нажми на экране) '/start' и внимательно следуй "
+                      f"инструкциям.\n"
+                      f"Все получится😊!")
+        bot.send_message(message.chat.id, text_error)
 
 
 @bot.message_handler(content_types=["photo"])
