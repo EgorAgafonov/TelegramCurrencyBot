@@ -3,8 +3,6 @@ import requests
 import easyocr
 from settings import *
 import segno
-import io
-from PIL import Image
 
 
 class ConvertionException(Exception):
@@ -68,8 +66,8 @@ class TextImageReader:
         значение пути к файлу для распознавания. """
 
         reader = easyocr.Reader(langs)
-        recognized_List = reader.readtext(file_path, detail=0, paragraph=True, text_threshold=0.5)
-        recognized_string = '\n'.join(recognized_List)
+        recognized_list = reader.readtext(file_path, detail=0, paragraph=True, text_threshold=0.5)
+        recognized_string = '\n'.join(recognized_list)
         result = recognized_string.replace("<", "'").replace(">", "'").replace("/", "'")
         return result
 
