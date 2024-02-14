@@ -68,7 +68,7 @@ class TextImageReader:
         значение пути к файлу для распознавания. """
 
         reader = easyocr.Reader(langs)
-        result = reader.readtext(file_path, detail=0, paragraph=True)
+        result = reader.readtext(file_path, detail=0, paragraph=True, text_threshold=0.5)
         recognized_string = '\n'.join(result)
         return recognized_string
 

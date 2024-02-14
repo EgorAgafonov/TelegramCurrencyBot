@@ -6,7 +6,9 @@ import easyocr
 import sys
 import segno
 import io
+import os
 from PIL import Image
+
 
 # 1 -
 # - ?????? ???????? ??????????? HTML-???????? (??????? ??????????? ? ???????? ????? ???????) ? ??????? ????????? lxml:
@@ -46,33 +48,10 @@ from PIL import Image
 #         f.write(result)
 #         print(f"{link.getText()}\n" + f"{base + link.get('href')}\n")
 
-# def text_recognition(file_path):
-#     reader = easyocr.Reader(['ru', "en"])
-#     result = reader.readtext(file_path, detail=0, paragraph=True)
-#     return result
-#
-#
-# def main():
-#     file_object = os.path.split("\\chat_images\\test.png")
-#     recognized_text = text_recognition(file_path=file_object)
-#     print(recognized_text)
-#
-#     # 1 - ??????? ??????????? ?????? ??????????? OCR
-#     recognized_string = '\n'.join(recognized_text)
-#     print(recognized_string)
-#
-#     # 2 - ??????? ??????????? ?????? ??????????? OCR
-#     for key in recognized_text:
-#         print(key)
 
-
-# if __name__ == "__main__":
-#     main()
-
-
-qrcode_1 = segno.make_qr("https://github.com/EgorAgafonov/TelegramCurrencyBot.git")
-img = qrcode_1.to_pil(scale=25).rotate(45, expand=True)
-img.save("qrcode_scale_30.png", light="lightgreen")
+# qrcode_1 = segno.make_qr("https://github.com/EgorAgafonov/TelegramCurrencyBot.git")
+# img = qrcode_1.to_pil(scale=25).rotate(45, expand=True)
+# img.save("qrcode_scale_30.png", light="lightgreen")
 
 
 # out = io.BytesIO()
@@ -90,3 +69,28 @@ img.save("qrcode_scale_30.png", light="lightgreen")
 # box = ((img_width - logo_img.size[0]) // 2, (img_height - logo_img.size[1]) // 2)
 # img.paste(logo_img, box)
 # img.save('qrcode_with_logo.png')
+
+
+def text_recognition(file_path):
+    reader = easyocr.Reader(['ru', "en"])
+    result = reader.readtext(file_path, detail=0, paragraph=True, text_threshold=0.5)
+    return result
+
+
+def main():
+    # file_object = os.path.split("\\chat_images\\test.png")
+    recognized_text = text_recognition(file_path="C:\\Users\\agafo\\PycharmProjects\\TelegramCurrencyBot\\chat_images"
+                                                 "\\test.png")
+    # print(recognized_text)
+
+    # 1 - ??????? ??????????? ?????? ??????????? OCR
+    recognized_string = '\n'.join(recognized_text)
+    print(recognized_string)
+    #
+    # # 2 - ??????? ??????????? ?????? ??????????? OCR
+    # for key in recognized_text:
+    #     print(key)
+
+
+if __name__ == "__main__":
+    main()

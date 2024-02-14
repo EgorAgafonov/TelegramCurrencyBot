@@ -91,7 +91,7 @@ def set_recogn_langs_handler(message: telebot.types.Message):
                 f"<b>ru</b> - если изображение содержит символы букв только одного языка (например только русского);\n"
                 f"<b>ru en</b> - если изображение содержит символы букв нескольких языков (например и русского, и "
                 f"английского).\n"
-                f"Вот корректный пример ввода (например): <b>de fr</b>, либо только <b>ru</b>."
+                f"Вот корректный пример ввода (например): <b>de fr</b> (или только <b>ru</b>).\n"
                 f"Список доступных для распознавания языков:\n"
                 f"{langs_str}")
     bot.send_message(message.chat.id, text_msg, parse_mode="html")
@@ -123,7 +123,11 @@ def create_qr_code(message):
 
 def convert_currencies(message: telebot.types.Message):
     try:
-        values = message.text.split(' ')
+        incoming_msg = message.text.split(' ')
+        values = []
+        for i in incoming_msg:
+            i.upper()
+            values.append(i)
         if len(values) != 3:
             raise ConvertionException(
                 f"Ошибка!\n"
