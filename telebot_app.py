@@ -119,6 +119,8 @@ def create_qr_code(message):
     text = "Готово👌🏻:"
     bot.send_message(message.chat.id, text)
     bot.send_photo(message.chat.id, qr_code)
+    bot.send_message(message.chat.id, text="Для продолжения нажми кнопку /start в меню или набери и отправь "
+                                           "команду: /start в поле для ввода сообщений😊!")
 
 
 def convert_currencies(message: telebot.types.Message):
