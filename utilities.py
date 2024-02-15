@@ -57,11 +57,12 @@ class CryptoConverter:
 
         return status, result
 
+
 class RequestsToEGRYUL:
     @staticmethod
-    def test_find_by_id_company_valid():
+    def find_company_by_INN(inn: str):
         dadata = Dadata(TOKEN_DADATA)
-        response = dadata.find_by_id('party', '7721581040')
+        response = dadata.find_by_id('party', inn)
 
         block_of_data = response[0].get('data')
         block_of_name = block_of_data['name']
