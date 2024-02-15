@@ -1,8 +1,9 @@
 import json
-import requests
 import easyocr
-from settings import *
+import requests
 import segno
+from dadata import Dadata
+from settings import *
 
 
 class ConvertionException(Exception):
@@ -56,6 +57,18 @@ class CryptoConverter:
 
         return status, result
 
+class RequestsToEGRYUL:
+    @staticmethod
+    def test_find_by_id_company_valid():
+        dadata = Dadata(TOKEN_DADATA)
+        response = dadata.find_by_id('party', '7721581040')
+
+        block_of_data = response[0].get('data')
+        block_of_name = block_of_data['name']
+
+        assert block_of_data['kpp'] == '770401001'  # получаем значение ключа 'kpp' и сравниваем его с ожидаемым(верным)
+        assert block_of_name['full_with_opf'] == '''ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ "ДЕЙТА КЬЮ"'''
+
 
 class TextImageReader:
 
@@ -76,7 +89,8 @@ class QRcodeMaker:
     @staticmethod
     def make_QR_code(content):
         qrcode = segno.make_qr(content, error='h')
-        qrcode.save("qrcode_scale_25.png", scale=25, light='lightgreen')
-        result = open("qrcode_scale_25.png", mode="rb")
+        file_path = "./chat_images/qrcode_scale_25.png"
+        qrcode.save(file_path, scale=25, light='lightgreen')
+        result = open(file_path, mode="rb")
         return result
 
