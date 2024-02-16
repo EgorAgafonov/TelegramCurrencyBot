@@ -18,13 +18,13 @@ def start(message: telebot.types.Message):
                  "2️⃣ Распознавать текст на изображении(фото) и выводить его в текстовом формате в чат.\n"
                  "Для запроса нажми кнопку <b><u>'Распознать текст (OCR)'</u>;</b>\n"
                  "3️⃣ Сгенерировать QR-код с ссылкой на веб-сайт или зашифрованными данными.\n"
-                 "Для запроса нажми кнопку <b><u>'Создать QR-код'</u>;</b>"
+                 "Для запроса нажми кнопку <b><u>'Создать QR-код'</u>;</b>\n"
                  "4️⃣ Получить сведения о юридическом лице из ЕГРЮЛ.\n"
                  "Для запроса нажми кнопку <b><u>'Реквизиты организации (ЕГРЮЛ)'</u>;</b>"
                  )
     markup = types.ReplyKeyboardMarkup()
-    btn_1 = types.KeyboardButton("  Курс/Стоимость валюты")
-    btn_2 = types.KeyboardButton("Распознать текст (OCR)")
+    btn_1 = types.KeyboardButton("Курс/Стоимость валюты")
+    btn_2 = types.KeyboardButton("Распознать текст(OCR)")
     markup.row(btn_1, btn_2)
     btn_3 = types.KeyboardButton("Создать QR-код")
     btn_4 = types.KeyboardButton("Реквизиты организации (ЕГРЮЛ)")
@@ -50,7 +50,7 @@ def text_messages_handler(message: telebot.types.Message):
         bot.send_message(message.chat.id, trigger_msg_qrcode, parse_mode='html')
         bot.register_next_step_handler(message, create_qr_code)
 
-    elif message.text == "Распознать текст (OCR)":
+    elif message.text == "Распознать текст(OCR)":
         trigger_msg_ocr = (f"{message.chat.username}, готов принять фото для распознавания 🙂!\n"
                            f"<b>Просто прикрепи и отправь изображение(фото) текста.</b>\n"
                            f"Доступно распознавание текста с кириллическими, латинскими символами либо иероглифами "
@@ -73,13 +73,13 @@ def text_messages_handler(message: telebot.types.Message):
         bot.send_message(message.chat.id, trigger_msg_curr, parse_mode="html")
         bot.register_next_step_handler(message, convert_currencies)
 
-    if message.text == "Реквизиты организации (ЕГРЮЛ)":
-        trigger_msg_EGRYL = (f"Для предоставления сведений о юридическом лице (ЮЛ) введите и отправьте сообщение с "
+    elif message.text == "Реквизиты организации (ЕГРЮЛ)":
+        trigger_msg_egryl = (f"Для предоставления сведений о юридическом лице (ЮЛ) введите и отправьте сообщение с "
                              f"наименованием ЮЛ и/или ИНН. Пример:\n "
                              f"<b>ПАО Газпром</b>;\n"
                              f"либо -\n"
                              f"<b>Сбербанк 7707083893</b>.")
-        bot.send_message(message.chat.id, trigger_msg_EGRYL, parse_mode="html")
+        bot.send_message(message.chat.id, trigger_msg_egryl, parse_mode="html")
         bot.register_next_step_handler(message, get_EGRYL_data)
 
     else:
@@ -111,7 +111,7 @@ def set_recogn_langs_handler(message: telebot.types.Message):
     bot.register_next_step_handler(message, image_OCR_recognition)
 
 
-def image_OCR_recognition(message: telebot.types.Message):
+def image_OCR_recognition(message):
     msg_list = message.text.split(' ')
     langs = []
     for i in msg_list:
@@ -126,7 +126,7 @@ def image_OCR_recognition(message: telebot.types.Message):
                                            "команду: /start в поле для ввода сообщений😊!")
 
 
-def create_qr_code(message: telebot.types.Message):
+def create_qr_code(message):
     html_link = message.text
     qr_code = QRcodeMaker.make_QR_code(html_link)
     text = "Готово👌🏻:"
@@ -136,9 +136,21 @@ def create_qr_code(message: telebot.types.Message):
                                            "команду: /start в поле для ввода сообщений😊!")
 
 
-def get_EGRYL_data(message: telebot.types.Message):
+def get_EGRYL_data(message):
     incoming_msg = message.text
     response = RequestsToEGRYUL.find_org_by_name(incoming_msg)
+    metro = response[0].get("data").get("address").get("data").get("metro")
+    tax_system = response[0].get('data').get('finance')
+    if metro is None:
+        metro_check = "нет"
+        metro_dist = "нет"
+    else:
+        metro_check = metro[0].get('name')
+        metro_dist = metro[0].get('distance')
+    if tax_system is None:
+        tax_check = "сведения отсутствуют"
+    else:
+        tax_check = response[0].get('data').get('finance').get('tax_system')
 
     result = (f"Полное наимен-ие: <b>{response[0].get('data').get('name').get('full_with_opf')}</b>\n"
               f"Краткое наимен-ие: <b>{response[0].get('data').get('name').get('short_with_opf')}</b>\n"
@@ -153,7 +165,10 @@ def get_EGRYL_data(message: telebot.types.Message):
               f"Код налог-ой инсп-ции: <b>{response[0].get('data').get('address').get('data').get('tax_office')}</b>\n"
               f"Основной ОКВЭД: <b>{response[0].get('data').get('okved')}</b>\n"
               f"Сведения о лицен-ях: <b>{response[0].get('data').get('licenses')}</b>\n"
-              f"Адрес госуд-ой рег-ии: <b>{response[0].get('data').get('address').get('value')}</b>\n")
+              f"Система налогооб-ия: <b>{tax_check}</b>\n"
+              f"Адрес госуд-ой рег-ии: <b>{response[0].get('data').get('address').get('value')}</b>\n"
+              f"Ближайшее метро: <b>м. {metro_check}</b>\n"
+              f"Расстояние до метро: <b>{metro_dist}</b>\n")
 
     text = "Готово👌🏻:"
     bot.send_message(message.chat.id, text)
@@ -162,7 +177,7 @@ def get_EGRYL_data(message: telebot.types.Message):
                                            "команду: /start в поле для ввода сообщений😊!")
 
 
-def convert_currencies(message: telebot.types.Message):
+def convert_currencies(message):
     try:
         incoming_msg = message.text.split(' ')
         values = []
