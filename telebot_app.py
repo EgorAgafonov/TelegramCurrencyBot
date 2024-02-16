@@ -1,7 +1,7 @@
 import telebot
 from telebot import types
 from settings import *
-from utilities import ConvertionException, CryptoConverter, TextImageReader, QRcodeMaker
+from utilities import ConvertionException, CryptoConverter, TextImageReader, QRcodeMaker, RequestsToEGRYUL
 
 bot = telebot.TeleBot(TOKEN)
 
@@ -70,13 +70,16 @@ def text_messages_handler(message: telebot.types.Message):
         bot.register_next_step_handler(message, convert_currencies)
 
     if message.text == "Реквизиты организации (ЕГРЮЛ)":
-        trigger_msg_EGRYL = (f"1️⃣ Для предоставления сведений из ЕГРЮЛ введите и отправьте сообщение с наименованием "
-                             f"организации и/или ИНН организации. Например:\n "
+        trigger_msg_EGRYL = (f"1️⃣ Для предоставления сведений о юридическом лице (ЮЛ) введите и отправьте сообщение с "
+                             f"наименованием ЮЛ и/или ИНН ЮЛ. Например:\n "
                              f"<b>ПАО Газпром</b>;"
                              f"либо - "
                              f"<b>Сбербанк 7707083893</b>."
-                             f"2️⃣  Для предоставления сведений о филиале организации введите и отправьте сообщение с "
-                             f"наименованием организации")
+                             f"2️⃣  Для предоставления сведений о филиале ЮЛ введите и отправьте сообщение с "
+                             f"наименованием ЮЛ и номером КПП его филиала. Например:\n "
+                             f"<b>Сбербанк 540602001</b>\n")
+        bot.send_message(message.chat.id, trigger_msg_EGRYL, parse_mode="html")
+        bot.register_next_step_handler(message,)
 
     else:
         text_error = (f"{message.chat.username}, указанная команда не соответствует условиям текущего запроса или "
@@ -107,7 +110,7 @@ def set_recogn_langs_handler(message: telebot.types.Message):
     bot.register_next_step_handler(message, image_OCR_recognition)
 
 
-def image_OCR_recognition(message):
+def image_OCR_recognition(message: telebot.types.Message):
     msg_list = message.text.split(' ')
     langs = []
     for i in msg_list:
@@ -122,7 +125,7 @@ def image_OCR_recognition(message):
                                            "команду: /start в поле для ввода сообщений😊!")
 
 
-def create_qr_code(message):
+def create_qr_code(message: telebot.types.Message):
     html_link = message.text
     qr_code = QRcodeMaker.make_QR_code(html_link)
     text = "Готово👌🏻:"
@@ -130,6 +133,11 @@ def create_qr_code(message):
     bot.send_photo(message.chat.id, qr_code)
     bot.send_message(message.chat.id, text="Для продолжения нажми кнопку /start в меню или набери и отправь "
                                            "команду: /start в поле для ввода сообщений😊!")
+
+
+def get_EGRYL_data(message: telebot.types.Message):
+    incoming_msg = message.text
+    result = RequestsToEGRYUL.find_company_by_INN(incoming_msg)
 
 
 def convert_currencies(message: telebot.types.Message):
