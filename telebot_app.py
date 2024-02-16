@@ -23,7 +23,7 @@ def start(message: telebot.types.Message):
     btn_2 = types.KeyboardButton("Распознать текст (OCR)")
     markup.row(btn_1, btn_2)
     btn_3 = types.KeyboardButton("Создать QR-код")
-    btn_4 = types.KeyboardButton("/start")
+    btn_4 = types.KeyboardButton("Реквизиты организации (ЕГРЮЛ)")
     markup.row(btn_3, btn_4)
     bot.send_message(message.chat.id, text_info, parse_mode='html', reply_markup=markup)
 
@@ -68,6 +68,15 @@ def text_messages_handler(message: telebot.types.Message):
             f"{curr_str}")
         bot.send_message(message.chat.id, trigger_msg_curr, parse_mode="html")
         bot.register_next_step_handler(message, convert_currencies)
+
+    if message.text == "Реквизиты организации (ЕГРЮЛ)":
+        trigger_msg_EGRYL = (f"1️⃣ Для предоставления сведений из ЕГРЮЛ введите и отправьте сообщение с наименованием "
+                             f"организации и/или ИНН организации. Например:\n "
+                             f"<b>ПАО Газпром</b>;"
+                             f"либо - "
+                             f"<b>Сбербанк 7707083893</b>."
+                             f"2️⃣  Для предоставления сведений о филиале организации введите и отправьте сообщение с "
+                             f"наименованием организации")
 
     else:
         text_error = (f"{message.chat.username}, указанная команда не соответствует условиям текущего запроса или "
