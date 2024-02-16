@@ -2,6 +2,7 @@ import telebot
 from telebot import types
 from settings import *
 from utilities import ConvertionException, CryptoConverter, TextImageReader, QRcodeMaker, RequestsToEGRYUL
+import datetime
 
 bot = telebot.TeleBot(TOKEN)
 
@@ -137,10 +138,34 @@ def create_qr_code(message: telebot.types.Message):
 
 def get_EGRYL_data(message: telebot.types.Message):
     incoming_msg = message.text
-    result = RequestsToEGRYUL.find_org_by_name(incoming_msg)
+    response = RequestsToEGRYUL.find_org_by_name(incoming_msg)
+
+    metro = response[0].get("data").get("address").get("data").get("metro")
+
+    print(response[0].get("data").get('state').get("status"))  # Статус организации (действ-ее/недействующее)
+    print(response[0].get("data").get("address").get("data").get("tax_office"))  # номер налоговой инспекции
+    print(response[0].get("data").get('okved'))  # ОКВЭД
+    print(response[0].get("data").get('licenses'))  # сведения о лицензиях
+    print(response[0].get("data").get('finance').get("tax_system"))  # система налогообложения
+    print(response[0].get("data").get('address').get("value"))  # адрес местонахождения
+    print(metro[0].get("name"))  # ближайшее метро
+    print(metro[0].get("distance"))  # расстояние от метро в км.
+
+    result = (f"Полное наименование: <b>{response[0].get('data').get('name').get('full_with_opf')}</b>\n"
+              f"Краткое наименование: <b>{response[0].get('data').get('name').get('short_with_opf')}</b>\n"
+              f"ИНН: <b>{response[0].get('value')}</b>\n"
+              f"КПП: <b>{response[0].get('data').get('kpp')}</b>\n"
+              f"ОГРН: <b>{response[0].get('data').get('ogrn')}</b>\n"
+              f"Дата рег-ии: "
+              f"<b>{datetime.datetime.fromtimestamp(((response[0].get('data').get('state').get('registration_date')) / 1000))}</b>\n"
+              f"ФИО руководителя(ЕИО): <b>{response[0].get('data').get('management').get('name')}</b>\n"
+              f"Должность руководителя: <b>{response[0].get('data').get('management').get('post')}</b>\n"
+              f"Статус организации (действ./не действ.): <b>{response[0].get('data').get('state').get('status')}</b>\n"
+              f"")
+
     text = "Готово👌🏻:"
     bot.send_message(message.chat.id, text)
-    bot.send_photo(message.chat.id, result, parse_mode="html")
+    bot.send_message(message.chat.id, result, parse_mode="html")
     bot.send_message(message.chat.id, text="Для продолжения нажми кнопку /start в меню или набери и отправь "
                                            "команду: /start в поле для ввода сообщений😊!")
 

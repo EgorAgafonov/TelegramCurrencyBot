@@ -4,6 +4,7 @@ import requests
 import segno
 from dadata import Dadata
 from settings import *
+import datetime
 
 
 class ConvertionException(Exception):
@@ -62,29 +63,8 @@ class RequestsToEGRYUL:
     @staticmethod
     def find_org_by_name(organization_data):
         dadata = Dadata(TOKEN_DADATA)
-        response = dadata.suggest('party', organization_data)
-        # metro = response[0].get("data").get("address").get("data").get("metro")
-
-        # print(response[0].get("data").get('name').get("full_with_opf"))  # полное наименование ЮЛ
-        # print(response[0].get("value"))  # краткое наименование
-        # print(response[0].get("data").get('inn'))  # ИНН
-        # print(response[0].get("data").get('kpp'))  # КПП
-        # print(response[0].get("data").get('ogrn'))  # ОГРН
-        # print(datetime.datetime.fromtimestamp(((response[0].get("data").get('state').get("registration_date")) / 1000)))
-        # # Дата регистрации
-        # print(response[0].get("data").get('management').get("name"))  # ФИО директора
-        # print(response[0].get("data").get('management').get("post"))  # Наименование должности
-        # print(response[0].get("data").get('state').get("status"))  # Статус организации (действ-ее/недействующее)
-        # print(response[0].get("data").get("address").get("data").get("tax_office"))  # номер налоговой инспекции
-        # print(response[0].get("data").get('okved'))  # ОКВЭД
-        # print(response[0].get("data").get('licenses'))  # сведения о лицензиях
-        # print(response[0].get("data").get('finance').get("tax_system"))  # система налогообложения
-        # print(response[0].get("data").get('address').get("value"))  # адрес местонахождения
-        # print(metro[0].get("name"))  # ближайшее метро
-        # print(metro[0].get("distance"))  # расстояние от метро в км.
-
-        text = response[0].get('data').get('name').get('full_with_opf')
-        return text
+        result = dadata.suggest('party', organization_data)
+        return result
 
 
 class TextImageReader:

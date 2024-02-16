@@ -13,6 +13,7 @@ from PIL import Image
 from dadata import Dadata
 from settings import TOKEN_DADATA
 import datetime
+import json
 
 
 # 1 -
@@ -76,25 +77,53 @@ import datetime
 # img.save('qrcode_with_logo.png')
 
 
-def text_recognition(file_path):
-    reader = easyocr.Reader(['ru', "en"])
-    result = reader.readtext(file_path, detail=0, paragraph=True, text_threshold=0.5)
-    return result
+# def text_recognition(file_path):
+#     reader = easyocr.Reader(['ru', "en"])
+#     result = reader.readtext(file_path, detail=0, paragraph=True, text_threshold=0.5)
+#     return result
+#
+#
+# def main():
+#     # file_object = os.path.split("\\chat_images\\test.png")
+#     recognized_text = text_recognition(file_path="../chat_images/test.png")
+#     # print(recognized_text)
+#
+#     # 1 - ??????? ??????????? ?????? ??????????? OCR
+#     recognized_string = '\n'.join(recognized_text)
+#     print(recognized_string)
+#     #
+#     # # 2 - ??????? ??????????? ?????? ??????????? OCR
+#     # for key in recognized_text:
+#     #     print(key)
 
 
-def main():
-    # file_object = os.path.split("\\chat_images\\test.png")
-    recognized_text = text_recognition(file_path="../chat_images/test.png")
-    # print(recognized_text)
-
-    # 1 - ??????? ??????????? ?????? ??????????? OCR
-    recognized_string = '\n'.join(recognized_text)
-    print(recognized_string)
+def find_org_by_name_inn(organization_data):
+    dadata = Dadata(TOKEN_DADATA)
+    response = dadata.suggest('party', organization_data)
+    metro = response[0].get("data").get("address").get("data").get("metro")
     #
-    # # 2 - ??????? ??????????? ?????? ??????????? OCR
-    # for key in recognized_text:
-    #     print(key)
+    # print(response[0].get("data").get('name').get("full_with_opf"))  # полное наименование ЮЛ
+    # print(response[0].get("value"))  # краткое наименование
+    # print(response[0].get("data").get('inn'))  # ИНН
+    # print(response[0].get("data").get('kpp'))  # КПП
+    # print(response[0].get("data").get('ogrn'))  # ОГРН
+    # print(datetime.datetime.fromtimestamp(((response[0].get("data").get('state').get("registration_date")) / 1000)))
+    # # Дата регистрации
+    # print(response[0].get("data").get('management').get("name"))  # ФИО директора
+    # print(response[0].get("data").get('management').get("post"))  # Наименование должности
+    # print(response[0].get("data").get('state').get("status"))  # Статус организации (действ-ее/недействующее)
+    # print(response[0].get("data").get("address").get("data").get("tax_office"))  # номер налоговой инспекции
+    # print(response[0].get("data").get('okved'))  # ОКВЭД
+    # print(response[0].get("data").get('licenses'))  # сведения о лицензиях
+    # print(response[0].get("data").get('finance').get("tax_system"))  # система налогообложения
+    # print(response[0].get("data").get('address').get("value"))  # адрес местонахождения
+    # print(metro[0].get("name"))  # ближайшее метро
+    # print(metro[0].get("distance"))  # расстояние от метро в км.
+    #
+    text = f"Полное наименование: {response[0].get('data').get('name').get('full_with_opf')}"
+    return print(response)
 
 
 if __name__ == "__main__":
-    main()
+    # main()
+    find_org_by_name_inn(organization_data="АО СТНГ")
