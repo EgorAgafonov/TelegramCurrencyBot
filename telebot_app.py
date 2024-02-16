@@ -154,7 +154,6 @@ def get_EGRYL_data(message: telebot.types.Message):
               f"Код налог-ой инсп-ции: <b>{response[0].get('data').get('address').get('data').get('tax_office')}</b>\n"
               f"Основной ОКВЭД: <b>{response[0].get('data').get('okved')}</b>\n"
               f"Сведения о лицен-ях: <b>{response[0].get('data').get('licenses')}</b>\n"
-              f"Система налогооб-ия: <b>{response[0].get('data').get('finance').get('tax_system')}</b>\n"
               f"Адрес госуд-ой рег-ии: <b>{response[0].get('data').get('address').get('value')}</b>\n"
               f"Ближайшее метро: <b>м. {metro[0].get('name')}</b>\n"
               f"Расстояние до метро: <b>{metro[0].get('distance')}</b>\n")
