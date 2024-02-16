@@ -100,8 +100,14 @@ import json
 def find_org_by_name_inn(organization_data):
     dadata = Dadata(TOKEN_DADATA)
     response = dadata.suggest('party', organization_data)
+    print(response)
     metro = response[0].get("data").get("address").get("data").get("metro")
-
+    if metro is None:
+        metro_check = "нет"
+        metro_dist = "нет"
+    else:
+        metro_check = metro[0].get('name')
+        metro_dist = metro[0].get('distance')
     result = (f"Полное наимен-ие: <b>{response[0].get('data').get('name').get('full_with_opf')}</b>\n"
               f"Краткое наимен-ие: <b>{response[0].get('data').get('name').get('short_with_opf')}</b>\n"
               f"ИНН: <b>{response[0].get('value')}</b>\n"
@@ -117,12 +123,11 @@ def find_org_by_name_inn(organization_data):
               f"Сведения о лицен-ях: <b>{response[0].get('data').get('licenses')}</b>\n"
               f"Система налогооб-ия: <b>{response[0].get('data').get('finance').get('tax_system')}</b>\n"
               f"Адрес госуд-ой рег-ии: <b>{response[0].get('data').get('address').get('value')}</b>\n"
-              f"Ближайшее метро: <b>м. {metro[0].get('name')}</b>\n"
-              f"Расстояние до метро: <b>{metro[0].get('distance')}</b>\n")
-
+              f"Ближайшее метро: <b>м. {metro_check}</b>\n"
+              f"Расстояние до метро: <b>{metro_dist}</b>\n")
     return print(result)
 
 
 if __name__ == "__main__":
     # main()
-    find_org_by_name_inn(organization_data="АО СТНГ")
+    find_org_by_name_inn(organization_data="Стройгазконсалтинг")

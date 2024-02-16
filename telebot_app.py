@@ -139,7 +139,6 @@ def create_qr_code(message: telebot.types.Message):
 def get_EGRYL_data(message: telebot.types.Message):
     incoming_msg = message.text
     response = RequestsToEGRYUL.find_org_by_name(incoming_msg)
-    metro = response[0].get("data").get("address").get("data").get("metro")
 
     result = (f"Полное наимен-ие: <b>{response[0].get('data').get('name').get('full_with_opf')}</b>\n"
               f"Краткое наимен-ие: <b>{response[0].get('data').get('name').get('short_with_opf')}</b>\n"
@@ -154,9 +153,7 @@ def get_EGRYL_data(message: telebot.types.Message):
               f"Код налог-ой инсп-ции: <b>{response[0].get('data').get('address').get('data').get('tax_office')}</b>\n"
               f"Основной ОКВЭД: <b>{response[0].get('data').get('okved')}</b>\n"
               f"Сведения о лицен-ях: <b>{response[0].get('data').get('licenses')}</b>\n"
-              f"Адрес госуд-ой рег-ии: <b>{response[0].get('data').get('address').get('value')}</b>\n"
-              f"Ближайшее метро: <b>м. {metro[0].get('name')}</b>\n"
-              f"Расстояние до метро: <b>{metro[0].get('distance')}</b>\n")
+              f"Адрес госуд-ой рег-ии: <b>{response[0].get('data').get('address').get('value')}</b>\n")
 
     text = "Готово👌🏻:"
     bot.send_message(message.chat.id, text)
