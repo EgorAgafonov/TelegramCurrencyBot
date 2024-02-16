@@ -1,7 +1,5 @@
 /.env
 /venv/
-/lxml_lessns/
-/lxml_lessns/main.py
 /my_cookies.txt
 /my_cookies.pkl
 __pycache__
