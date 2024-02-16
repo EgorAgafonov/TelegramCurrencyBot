@@ -79,7 +79,7 @@ def text_messages_handler(message: telebot.types.Message):
                              f"наименованием ЮЛ и номером КПП его филиала. Например:\n "
                              f"<b>Сбербанк 540602001</b>\n")
         bot.send_message(message.chat.id, trigger_msg_EGRYL, parse_mode="html")
-        bot.register_next_step_handler(message,)
+        bot.register_next_step_handler(message, get_EGRYL_data)
 
     else:
         text_error = (f"{message.chat.username}, указанная команда не соответствует условиям текущего запроса или "
@@ -137,7 +137,12 @@ def create_qr_code(message: telebot.types.Message):
 
 def get_EGRYL_data(message: telebot.types.Message):
     incoming_msg = message.text
-    result = RequestsToEGRYUL.find_company_by_INN(incoming_msg)
+    result = RequestsToEGRYUL.find_org_by_name(incoming_msg)
+    text = "Готово👌🏻:"
+    bot.send_message(message.chat.id, text)
+    bot.send_photo(message.chat.id, result, parse_mode="html")
+    bot.send_message(message.chat.id, text="Для продолжения нажми кнопку /start в меню или набери и отправь "
+                                           "команду: /start в поле для ввода сообщений😊!")
 
 
 def convert_currencies(message: telebot.types.Message):
