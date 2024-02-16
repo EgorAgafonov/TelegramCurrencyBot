@@ -71,14 +71,11 @@ def text_messages_handler(message: telebot.types.Message):
         bot.register_next_step_handler(message, convert_currencies)
 
     if message.text == "Реквизиты организации (ЕГРЮЛ)":
-        trigger_msg_EGRYL = (f"1️⃣ Для предоставления сведений о юридическом лице (ЮЛ) введите и отправьте сообщение с "
-                             f"наименованием ЮЛ и/или ИНН ЮЛ. Например:\n "
-                             f"<b>ПАО Газпром</b>;"
-                             f"либо - "
-                             f"<b>Сбербанк 7707083893</b>."
-                             f"2️⃣  Для предоставления сведений о филиале ЮЛ введите и отправьте сообщение с "
-                             f"наименованием ЮЛ и номером КПП его филиала. Например:\n "
-                             f"<b>Сбербанк 540602001</b>\n")
+        trigger_msg_EGRYL = (f"Для предоставления сведений о юридическом лице (ЮЛ) введите и отправьте сообщение с "
+                             f"наименованием ЮЛ и/или ИНН. Пример:\n "
+                             f"<b>ПАО Газпром</b>;\n"
+                             f"либо -\n"
+                             f"<b>Сбербанк 7707083893</b>.")
         bot.send_message(message.chat.id, trigger_msg_EGRYL, parse_mode="html")
         bot.register_next_step_handler(message, get_EGRYL_data)
 
@@ -143,7 +140,7 @@ def get_EGRYL_data(message: telebot.types.Message):
 
     result = (f"Полное наимен-ие: <b>{response[0].get('data').get('name').get('full_with_opf')}</b>\n"
               f"Краткое наимен-ие: <b>{response[0].get('data').get('name').get('short_with_opf')}</b>\n"
-              f"ИНН: <b>{response[0].get('value')}</b>\n"
+              f"ИНН: <b>{response[0].get('data').get('inn')}</b>\n"
               f"КПП: <b>{response[0].get('data').get('kpp')}</b>\n"
               f"ОГРН: <b>{response[0].get('data').get('ogrn')}</b>\n"
               f"Дата рег-ии: "

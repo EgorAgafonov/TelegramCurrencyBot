@@ -63,8 +63,8 @@ class RequestsToEGRYUL:
     @staticmethod
     def find_org_by_name(organization_data):
         dadata = Dadata(TOKEN_DADATA)
-        result = dadata.suggest('party', organization_data)
-        return result
+        response = dadata.suggest('party', organization_data)
+        return response
 
 
 class TextImageReader:
