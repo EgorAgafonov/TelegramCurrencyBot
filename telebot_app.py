@@ -139,18 +139,18 @@ def create_qr_code(message):
 def get_EGRYL_data(message):
     incoming_msg = message.text
     response = RequestsToEGRYUL.find_org_by_name(incoming_msg)
-    metro = response[0].get("data").get("address").get("data")['metro']
-    tax_system = response[0].get('data').get('finance')
+    metro = response[0]["data"]["address"]["data"]['metro']
+    tax_system = response[0]['data']['finance']
     if metro is None:
         metro_check = "нет"
         metro_dist = "нет"
     else:
-        metro_check = metro[0].get('name')
-        metro_dist = metro[0].get('distance')
+        metro_check = metro[0]['name']
+        metro_dist = metro[0]['distance']
     if tax_system is None:
         tax_check = "сведения отсутствуют"
     else:
-        tax_check = response[0].get('data').get('finance').get('tax_system')
+        tax_check = tax_system['tax_system']
 
     result = (f"Полное наимен-ие: <b>{response[0].get('data').get('name').get('full_with_opf')}</b>\n"
               f"Краткое наимен-ие: <b>{response[0].get('data').get('name').get('short_with_opf')}</b>\n"
