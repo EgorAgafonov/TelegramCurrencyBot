@@ -139,7 +139,7 @@ def create_qr_code(message):
 def get_EGRYL_data(message):
     incoming_msg = message.text
     response = RequestsToEGRYUL.find_org_by_name(incoming_msg)
-    metro = response[0].get("data").get("address").get("data").get("metro")
+    metro = response[0].get("data").get("address").get("data")['metro']
     tax_system = response[0].get('data').get('finance')
     if metro is None:
         metro_check = "нет"
