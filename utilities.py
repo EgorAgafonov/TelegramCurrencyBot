@@ -61,7 +61,7 @@ class CryptoConverter:
 
 class RequestsToEGRYUL:
     @staticmethod
-    def find_org_by_name(organization_data):
+    def find_org_by_name(organization_data: str) -> list:
         dadata = Dadata(TOKEN_DADATA)
         response = dadata.suggest('party', organization_data)
         metro = response[0]["data"]["address"]["data"]['metro']
@@ -79,28 +79,24 @@ class RequestsToEGRYUL:
 
         full_with_opf = response[0].get('data').get('name').get('full_with_opf')
         short_with_opf = response[0].get('data').get('name').get('short_with_opf')
+        inn = response[0].get('data').get('inn')
+        kpp = response[0].get('data').get('kpp')
+        ogrn = response[0].get('data').get('ogrn')
+        reg_date = datetime.datetime.fromtimestamp(((response[0].get('data').get('state').get('registration_date')) / 1000))
+        heads_name = response[0].get('data').get('management').get('name')
+        heads_post = response[0].get('data').get('management').get('post')
+        company_status = response[0].get('data').get('state').get('status')
+        tax_office_num = response[0].get('data').get('address').get('data').get('tax_office')
+        main_okved = response[0].get('data').get('okved')
+        licenses = response[0].get('data').get('licenses')
+        tax_system = tax_check
+        reg_address = response[0].get('data').get('address').get('value')
+        nearest_metro = metro_check
+        metro_distance = metro_dist
 
-
-        result = []
-
-        # result = (f"Полное наимен-ие: <b>{}</b>\n"
-        #           f"Краткое наимен-ие: <b>{}</b>\n"
-        #           f"ИНН: <b>{response[0].get('data').get('inn')}</b>\n"
-        #           f"КПП: <b>{response[0].get('data').get('kpp')}</b>\n"
-        #           f"ОГРН: <b>{response[0].get('data').get('ogrn')}</b>\n"
-        #           f"Дата рег-ии: "
-        #           f"<b>{datetime.datetime.fromtimestamp(((response[0].get('data').get('state').get('registration_date')) / 1000))}</b>\n"
-        #           f"ФИО руков-ля(ЕИО): <b>{response[0].get('data').get('management').get('name')}</b>\n"
-        #           f"Должность руков-ля: <b>{response[0].get('data').get('management').get('post')}</b>\n"
-        #           f"Статус ЮЛ (действ./не действ.): <b>{response[0].get('data').get('state').get('status')}</b>\n"
-        #           f"Код налог-ой инсп-ции: <b>{response[0].get('data').get('address').get('data').get('tax_office')}</b>\n"
-        #           f"Основной ОКВЭД: <b>{response[0].get('data').get('okved')}</b>\n"
-        #           f"Сведения о лицен-ях: <b>{response[0].get('data').get('licenses')}</b>\n"
-        #           f"Система налогооб-ия: <b>{tax_check}</b>\n"
-        #           f"Адрес госуд-ой рег-ии: <b>{response[0].get('data').get('address').get('value')}</b>\n"
-        #           f"Ближайшее метро: <b>м. {metro_check}</b>\n"
-        #           f"Расстояние до метро: <b>{metro_dist}</b>\n")
-
+        result = [full_with_opf, short_with_opf, inn, kpp, ogrn, reg_date, heads_name, heads_post,
+                  company_status, tax_office_num, main_okved, licenses, tax_system, reg_address, nearest_metro,
+                  metro_distance]
         return result
 
 
