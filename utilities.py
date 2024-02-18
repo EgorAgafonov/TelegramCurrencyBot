@@ -77,20 +77,20 @@ class RequestsToEGRYUL:
         else:
             tax_check = tax_system['tax_system']
 
-        full_with_opf = response[0].get('data').get('name').get('full_with_opf')
-        short_with_opf = response[0].get('data').get('name').get('short_with_opf')
-        inn = response[0].get('data').get('inn')
-        kpp = response[0].get('data').get('kpp')
-        ogrn = response[0].get('data').get('ogrn')
-        reg_date = datetime.datetime.fromtimestamp(((response[0].get('data').get('state').get('registration_date')) / 1000))
-        heads_name = response[0].get('data').get('management').get('name')
-        heads_post = response[0].get('data').get('management').get('post')
-        company_status = response[0].get('data').get('state').get('status')
-        tax_office_num = response[0].get('data').get('address').get('data').get('tax_office')
-        main_okved = response[0].get('data').get('okved')
-        licenses = response[0].get('data').get('licenses')
+        full_with_opf = response[0]['data']['name']['full_with_opf']
+        short_with_opf = response[0]['data']['name']['short_with_opf']
+        inn = response[0]['data']['inn']
+        kpp = response[0]['data']['kpp']
+        ogrn = response[0]['data']['ogrn']
+        reg_date = datetime.datetime.fromtimestamp(((response[0]['data']['state']['registration_date']) / 1000))
+        heads_name = response[0]['data']['management']['name']
+        heads_post = response[0]['data']['management']['post']
+        company_status = response[0]['data']['state']['status']
+        tax_office_num = response[0]['data']['address']['data']['tax_office']
+        main_okved = response[0]['data']['okved']
+        licenses = response[0]['data']['licenses']
         tax_system = tax_check
-        reg_address = response[0].get('data').get('address').get('value')
+        reg_address = response[0]['data']['address']['value']
         nearest_metro = metro_check
         metro_distance = metro_dist
 
