@@ -7,7 +7,7 @@ bot = telebot.TeleBot(TOKEN)
 
 
 @bot.message_handler(commands=['start', 'help'])
-def start(message: telebot.types.Message):
+def main(message: telebot.types.Message):
     text_info = (f"Приветствую тебя, {message.chat.username}!\n"
                  "Я - твой электронный бот-помощник!\n"
                  "Мой создатель - Агафонов Е.А.🙂\n\n"
@@ -196,3 +196,6 @@ def convert_currencies(message):
 
 
 bot.polling(none_stop=True)
+
+if __name__ == "__main__":
+    main()
