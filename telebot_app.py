@@ -2,7 +2,6 @@ import telebot
 from telebot import types
 from settings import *
 from utilities import ConvertionException, CryptoConverter, TextImageReader, QRcodeMaker, RequestsToEGRYUL
-import datetime
 
 bot = telebot.TeleBot(TOKEN)
 
@@ -96,7 +95,7 @@ def set_recogn_langs_handler(message: telebot.types.Message):
     text_pictures = message.photo[-1]
     file_info = bot.get_file(text_pictures.file_id)
     downloaded_file = bot.download_file(file_info.file_path)
-    save_path = RECOGN_IMAGE_PATH
+    save_path = "input_text_image.png"
     with open(save_path, 'wb') as new_file:
         new_file.write(downloaded_file)
     text_msg = (f"{message.chat.username}, укажи название языка на отправленном тобой  изображении.\n"
@@ -118,7 +117,7 @@ def image_OCR_recognition(message):
         langs.append(i.lower())
     bot.reply_to(message, f"{message.chat.username}, приступаю к распознаванию текста🤓!\n"
                           f" Потребуется время, просьба чуть-чуть подождать...")
-    result = TextImageReader.text_recognition(RECOGN_IMAGE_PATH, langs)
+    result = TextImageReader.text_recognition("input_text_image.png", langs)
     text = "Готово👌🏻:"
     bot.send_message(message.chat.id, text)
     bot.send_message(message.chat.id, text=f"<b>{result}</b>", parse_mode="html")
@@ -140,22 +139,22 @@ def get_EGRYL_data(message):
     incoming_msg = message.text
     response = RequestsToEGRYUL.find_org_by_name(incoming_msg)
 
-    result = (f"ПНО: <b>{}</b>\n"
-              f"КНО: <b>{}</b>\n"
-              f"ИНН: <b>{}</b>\n"
-              f"КПП: <b>{}</b>\n"
-              f"ОГРН: <b>{}</b>\n"
-              f"Дата регистрации: <b>{}</b>\n"
-              f"ФИО руководителя(ЕИО): <b>{}</b>\n"
-              f"Должность ЕИО: <b>{}</b>\n"
-              f"Статус организации: <b>{}</b>\n"
-              f"Код нал. инспекции: <b>{}</b>\n"
-              f"Основной ОКВЭД: <b>{}</b>\n"
-              f"Сведения о лицензиях: <b>{}</b>\n"
-              f"Система налогообложения: <b>{}</b>\n"
-              f"Адрес гос. регистрации: <b>{}</b>\n"
-              f"Ближайшее метро: <b>м. {}</b>\n"
-              f"Расстояние до метро: <b>{}</b>\n")
+    result = (f"ПНО: <b>{response[0]}</b>\n"
+              f"КНО: <b>{response[1]}</b>\n"
+              f"ИНН: <b>{response[2]}</b>\n"
+              f"КПП: <b>{response[3]}</b>\n"
+              f"ОГРН: <b>{response[4]}</b>\n"
+              f"Дата регистрации: <b>{response[5]}</b>\n"
+              f"ФИО руководителя(ЕИО): <b>{response[6]}</b>\n"
+              f"Должность ЕИО: <b>{response[7]}</b>\n"
+              f"Статус организации: <b>{response[8]}</b>\n"
+              f"Код нал. инспекции: <b>{response[9]}</b>\n"
+              f"Основной ОКВЭД: <b>{response[10]}</b>\n"
+              f"Сведения о лицензиях: <b>{response[11]}</b>\n"
+              f"Система налогообложения: <b>{response[12]}</b>\n"
+              f"Адрес гос. регистрации: <b>{response[13]}</b>\n"
+              f"Ближайшее метро: <b>м. {response[14]}</b>\n"
+              f"Расстояние до метро: <b>{response[15]}</b>\n")
 
     text = "Готово👌🏻:"
     bot.send_message(message.chat.id, text)

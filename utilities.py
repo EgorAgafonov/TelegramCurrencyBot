@@ -97,6 +97,7 @@ class RequestsToEGRYUL:
         result = [full_with_opf, short_with_opf, inn, kpp, ogrn, reg_date, heads_name, heads_post,
                   company_status, tax_office_num, main_okved, licenses, tax_system, reg_address, nearest_metro,
                   metro_distance]
+
         return result
 
 
@@ -119,7 +120,7 @@ class QRcodeMaker:
     @staticmethod
     def make_QR_code(content):
         qrcode = segno.make_qr(content, error='h')
-        file_path = "./chat_images/qrcode_scale_25.png"
+        file_path = "qrcode_scale_25.png"
         qrcode.save(file_path, scale=25, light='lightgreen')
         result = open(file_path, mode="rb")
         return result
