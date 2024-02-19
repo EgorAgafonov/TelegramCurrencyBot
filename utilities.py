@@ -1,4 +1,6 @@
 import json
+from typing import BinaryIO
+
 import easyocr
 import requests
 import segno
@@ -62,6 +64,10 @@ class CryptoConverter:
 class RequestsToEGRYUL:
     @staticmethod
     def find_org_by_name(organization_data: str) -> list:
+        """ Метод отправки запроса на API сервис сайта https://dadata.ru для предоставления сведений о юридическом лице
+        из открытых источников (ЕГРЮЛ). Формирует из полученного массива данных список с необходимыми сведениями
+        о ЮЛ."""
+
         dadata = Dadata(TOKEN_DADATA)
         response = dadata.suggest('party', organization_data)
         metro = response[0]["data"]["address"]["data"]['metro']
@@ -106,9 +112,9 @@ class TextImageReader:
     @staticmethod
     def text_recognition(file_path: str, langs: list) -> str:
         """Метод для оптического распознавания текста(OCR) на изображении, переданного пользователем в чат бота.
-        Возвращает распознанный текст в виде стандартных, текстовых символов. В аргумент file_path передается строковое
+        Возвращает распознанный текст в виде машинописных, текстовых символов. В аргумент file_path передается строковое
         значение пути к файлу для распознавания, аргумент langs принимает список с названием языков(а), символы
-        которых(ого) содержатся на распознаваемом изображении из чата."""
+        которых(ого) содержатся на распознаваемом изображении."""
 
         reader = easyocr.Reader(langs)
         recognized_list = reader.readtext(file_path, detail=0, paragraph=True, text_threshold=0.5)
@@ -122,7 +128,11 @@ class TextImageReader:
 
 class QRcodeMaker:
     @staticmethod
-    def make_QR_code(content):
+    def make_QR_code(content: str) -> BinaryIO:
+        """Метод для генерации стандартного QR-кода из сообщения чата, содержащего html-ссылку или
+        простой текст от пользователя. Возвращает байтовое представление сгенерированного qr-кода, хранящееся в
+        буфере памяти."""
+
         qrcode = segno.make_qr(content, error='h')
         file_path = "qrcode_scale_25.png"
         qrcode.save(file_path, scale=25, light='lightgreen')

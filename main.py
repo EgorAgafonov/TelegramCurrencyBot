@@ -136,8 +136,8 @@ def create_qr_code(message):
 
 
 def get_EGRYL_data(message):
-    incoming_msg = message.text
-    response = RequestsToEGRYUL.find_org_by_name(incoming_msg)
+    organisations_name = message.text
+    response = RequestsToEGRYUL.find_org_by_name(organisations_name)
 
     result = (f"ПНО: <b>{response[0]}</b>\n"
               f"КНО: <b>{response[1]}</b>\n"
