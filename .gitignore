@@ -1,6 +1,7 @@
 /.env
 /venv/
 /chat_images/
+/lxml_lessns/
 /my_cookies.txt
 /my_cookies.pkl
 __pycache__
