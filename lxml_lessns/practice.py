@@ -13,6 +13,7 @@ from dadata import Dadata
 from settings import TOKEN_DADATA
 import datetime
 import json
+import torch
 
 
 # 1 -
@@ -76,24 +77,24 @@ import json
 # img.save('qrcode_with_logo.png')
 
 
-# def text_recognition(file_path):
-#     reader = easyocr.Reader(['ru', "en"])
-#     result = reader.readtext(file_path, detail=0, paragraph=True, text_threshold=0.5)
-#     return result
-#
-#
-# def main():
-#     # file_object = os.path.split("\\chat_images\\test.png")
-#     recognized_text = text_recognition(file_path="../chat_images/test.png")
-#     # print(recognized_text)
-#
-#     # 1 - ??????? ??????????? ?????? ??????????? OCR
-#     recognized_string = '\n'.join(recognized_text)
-#     print(recognized_string)
-#     #
-#     # # 2 - ??????? ??????????? ?????? ??????????? OCR
-#     # for key in recognized_text:
-#     #     print(key)
+def text_recognition(file_path):
+    reader = easyocr.Reader(['ru', "en"])
+    result = reader.readtext(file_path, detail=0, paragraph=True, text_threshold=0.5)
+    return result
+
+
+def main():
+    # file_object = os.path.split("\\chat_images\\test.png")
+    recognized_text = text_recognition(file_path="../chat_images/test.png")
+    # print(recognized_text)
+
+    # 1 - ??????? ??????????? ?????? ??????????? OCR
+    recognized_string = '\n'.join(recognized_text)
+    print(recognized_string)
+    #
+    # # 2 - ??????? ??????????? ?????? ??????????? OCR
+    # for key in recognized_text:
+    #     print(key)
 
 
 # def find_org_by_name_inn(organization_data):
@@ -127,7 +128,7 @@ import json
 #     return print(result)
 #
 #
-# if __name__ == "__main__":
-#     # main()
-#     find_org_by_name_inn(organization_data="Стройгазконсалтинг")
+if __name__ == "__main__":
+    main()
+    # find_org_by_name_inn(organization_data="Стройгазконсалтинг")
 

@@ -8,7 +8,6 @@ from dadata import Dadata
 from settings import *
 import datetime
 
-
 class ConvertionException(Exception):
     pass
 
