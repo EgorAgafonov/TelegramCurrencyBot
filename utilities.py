@@ -61,6 +61,7 @@ class CryptoConverter:
 
 
 class RequestsToEGRYUL:
+
     @staticmethod
     def find_org_by_name(organization_data: str) -> list:
         """ Метод отправки запроса на API сервис сайта https://dadata.ru для предоставления сведений о юридическом лице

@@ -13,7 +13,6 @@ from dadata import Dadata
 from settings import TOKEN_DADATA
 import datetime
 import json
-import torch
 
 
 # 1 -
@@ -60,37 +59,36 @@ import torch
 # img.save("qrcode_scale_30.png", light="lightgreen")
 
 
-# out = io.BytesIO()
-# # Nothing special here, let Segno generate the QR code and save it as PNG in a buffer
-# segno.make_qr("https://github.com/EgorAgafonov/TelegramCurrencyBot.git", error='h').save(out, scale=25, kind='png')
-# out.seek(0)  # Important to let Pillow load the PNG
-# img = Image.open(out)
-# img = img.convert('RGB')  # Ensure colors for the output
-# img_width, img_height = img.size
-# logo_max_size = img_height // 3  # May use a fixed value as well
-# logo_img = Image.open('git_hub_logo.png')  # The logo
-# # Resize the logo to logo_max_size
-# logo_img.thumbnail((logo_max_size, logo_max_size), Image.Resampling.LANCZOS)
-# # Calculate the center of the QR code
-# box = ((img_width - logo_img.size[0]) // 2, (img_height - logo_img.size[1]) // 2)
-# img.paste(logo_img, box)
-# img.save('qrcode_with_logo.png')
+out = io.BytesIO()
+# Nothing special here, let Segno generate the QR code and save it as PNG in a buffer
+segno.make_qr(" https://github.com/EgorAgafonov/24.2.3._Calculator_test.git", error='h').save(out, scale=25, kind='png')
+out.seek(0)  # Important to let Pillow load the PNG
+img = Image.open(out).convert('RGB')  # Ensure colors for the output
+img_width, img_height = img.size
+logo_max_size = img_height // 3  # May use a fixed value as well
+logo_img = Image.open('../chat_images/git_hub_logo.png')  # The logo
+# Resize the logo to logo_max_size
+logo_img.thumbnail((logo_max_size, logo_max_size), Image.Resampling.LANCZOS)
+# Calculate the center of the QR code
+box = ((img_width - logo_img.size[0]) // 2, (img_height - logo_img.size[1]) // 2)
+img.paste(logo_img, box)
+img.save('qrcode_with_logo.png')
 
 
-def text_recognition(file_path):
-    reader = easyocr.Reader(['ru', "en"])
-    result = reader.readtext(file_path, detail=0, paragraph=True, text_threshold=0.5)
-    return result
-
-
-def main():
-    # file_object = os.path.split("\\chat_images\\test.png")
-    recognized_text = text_recognition(file_path="../chat_images/test.png")
-    # print(recognized_text)
-
-    # 1 - ??????? ??????????? ?????? ??????????? OCR
-    recognized_string = '\n'.join(recognized_text)
-    print(recognized_string)
+# def text_recognition(file_path):
+#     reader = easyocr.Reader(['ru', "en"])
+#     result = reader.readtext(file_path, detail=0, paragraph=True, text_threshold=0.5)
+#     return result
+#
+#
+# def main():
+#     # file_object = os.path.split("\\chat_images\\test.png")
+#     recognized_text = text_recognition(file_path="../chat_images/test.png")
+#     # print(recognized_text)
+#
+#     # 1 - ??????? ??????????? ?????? ??????????? OCR
+#     recognized_string = '\n'.join(recognized_text)
+#     print(recognized_string)
     #
     # # 2 - ??????? ??????????? ?????? ??????????? OCR
     # for key in recognized_text:
@@ -128,7 +126,7 @@ def main():
 #     return print(result)
 #
 #
-if __name__ == "__main__":
-    main()
-    # find_org_by_name_inn(organization_data="Стройгазконсалтинг")
+# if __name__ == "__main__":
+#     main()
+#     # find_org_by_name_inn(organization_data="Стройгазконсалтинг")
 
