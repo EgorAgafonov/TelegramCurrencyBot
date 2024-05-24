@@ -61,7 +61,7 @@ import json
 
 out = io.BytesIO()
 # Nothing special here, let Segno generate the QR code and save it as PNG in a buffer
-segno.make_qr(" https://github.com/EgorAgafonov/TelegramEgorBot.git", error='h').save(out, scale=25, kind='png')
+segno.make_qr(" https://github.com/EgorAgafonov/UI_tests_Tele2.git", error='h').save(out, scale=25, kind='png')
 out.seek(0)  # Important to let Pillow load the PNG
 img = Image.open(out).convert('RGB')  # Ensure colors for the output
 img_width, img_height = img.size
