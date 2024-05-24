@@ -8,6 +8,7 @@ from dadata import Dadata
 from settings import *
 import datetime
 
+
 class ConvertionException(Exception):
     pass
 
@@ -120,7 +121,7 @@ class TextImageReader:
         recognized_list = reader.readtext(file_path, detail=0, paragraph=True, text_threshold=0.5)
         recognized_string = '\n'.join(recognized_list)
         result = recognized_string.replace("<", "'").replace(">", "'").replace("/", "'") # из-за неверного распознавания
-        # отдельных символов в тексте, при передаче строк в чат, API сервис Telegram ошибочно распознает их как теги /.
+        # отдельных символов в тексте, при передаче строк в чат, API Telegram ошибочно распознает их как теги /.
         # При использовании аргумента parse_mode='html' это может привести к вызову исключений. По этой причине,
         # после распознавания из текстовой строки удаляется и меняется (.replace("/", "'") нежелательный знак "/".
         return result
