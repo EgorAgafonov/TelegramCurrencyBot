@@ -1,6 +1,5 @@
 import json
 from typing import BinaryIO
-
 import easyocr
 import requests
 import segno
